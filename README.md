@@ -13,7 +13,7 @@ The project also serves as a chance to try and build an application using Go lan
 - React
 - JavaScript
 - Go
-- Gin / Gonic ?
+- Gin
 - PostgreSQL
 - Heroku
 
