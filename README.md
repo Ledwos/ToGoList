@@ -38,5 +38,6 @@ As a user I would like to :
 
 - have the option to create a 'group' for tasks that require more than one person
 - be able to assign tasks to individuals within the 'group'
+- monitor use activity as admin of a group?
 
 
