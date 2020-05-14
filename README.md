@@ -17,4 +17,26 @@ The project also serves as a chance to try and build an application using Go lan
 - PostgreSQL
 - Heroku
 
+## User Stories
+
+As a user I would like to :
+
+- be able to create an account to have my personal workspace
+- be able to log in and out of the app 
+- view tasks I have scheduled for 'today'
+- view tasks scheduled for the 'week'
+- view tasks scheduled for the 'month' (calendar format)
+- view my task history to see how productive I am?
+- mark tasks as complete 
+- create tasks to keep track of my work with this app
+- update tasks should they need changing
+- delete tasks if they are no longer relevant
+
+Stretch goals:
+
+As a user I would like to :
+
+- have the option to create a 'group' for tasks that require more than one person
+- be able to assign tasks to individuals within the 'group'
+
 
