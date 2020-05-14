@@ -8,11 +8,19 @@ import (
 )
 
 func main() {
-
+	
+	// when ready to be deployed, set to ReleaseMode
+	// gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	//serve static files (html / css / js)
 	router.Use(static.Serve("/", static.LocalFile("./", true)))
+
+	// test route
+	router.GET("/hello/:name", func(c *gin.Context) {
+		name := c.Param("name")
+		c.String(http.StatusOK, "You woke me up %s", name)
+	})
 
 	// route group for API 
 	api := router.Group("/api")
@@ -25,7 +33,6 @@ func main() {
 	}
 
 	//add api routes below
-
 
 	// start / run server on given port
 	router.Run()
