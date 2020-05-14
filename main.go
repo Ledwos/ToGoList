@@ -2,13 +2,14 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	
+
 	// when ready to be deployed, set to ReleaseMode
 	// gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
@@ -35,5 +36,5 @@ func main() {
 	//add api routes below
 
 	// start / run server on given port
-	router.Run()
+	router.Run(":"+os.Getenv("PORT"))
 }

@@ -1,4 +1,4 @@
-module github.com/ledwos/togolist
+module github.com/Ledwos/ToGoList/tree/backend
 
 go 1.14
 
