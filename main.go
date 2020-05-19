@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"os"
+	// "os"
 	"fmt"
 	"database/sql"
 
@@ -49,16 +49,16 @@ func main() {
 	}
 
 	//test Insert SQL statement
-	sqlInsert := `
-	INSERT INTO usr (name, age)
-	VALUES ($1, $2)
-	RETURNING name`
-	name := ""
-	err = db.QueryRow(sqlInsert, "Gopher", "11").Scan(&name)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println(name, " has been added to the database!")
+	// sqlInsert := `
+	// INSERT INTO usr (name, age)
+	// VALUES ($1, $2)
+	// RETURNING name`
+	// name := ""
+	// err = db.QueryRow(sqlInsert, "Gopher", "11").Scan(&name)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// fmt.Println(name, " has been added to the database!")
 
 	// test route
 	router.GET("/hello/:name", func(c *gin.Context) {
@@ -77,9 +77,50 @@ func main() {
 	}
 
 	//add api routes below
+	api.POST("/add/:name/:age", func(c *gin.Context) {
+		name := c.Param("name")
+		age := c.Param("age")
+		sqlInsert := `
+			INSERT INTO usr (name, age)
+			VALUES ($1, $2)
+			RETURNING name`
+			id := ""
+			err = db.QueryRow(sqlInsert, name, age).Scan(&id)
+			if err != nil {
+				panic(err)
+			}
+		c.JSON(http.StatusOK, gin.H {
+				"Success": "new user added!",
+		})
+	})
+
+	api.GET("/all", func(c *gin.Context) {
+		type Allusr struct {
+			ID		int
+			Name 	string
+			Age 	int
+		}
+		sqlAll := `SELECT * FROM usr;`
+		var user Allusr
+		row := db.QueryRow(sqlAll)
+		err := row.Scan(&user.ID, &user.Name, &user.Age)
+		switch err {
+		case sql.ErrNoRows:
+			c.JSON(http.StatusOK, gin.H {
+				"Error": "no rows returned :(",
+			})
+			return
+		case nil:
+			c.JSON(http.StatusOK, gin.H {
+				"Success": user,
+			})
+		default:
+			panic(err)
+		}
+	})
 
 	// start / run server on given port
-	router.Run(":"+os.Getenv("PORT"))
+	// router.Run(":"+os.Getenv("PORT"))
 	// CHANGE router.Run AND UNCOMMENT OS IMPORT WHEN DEPLOYING!
-	// router.Run()
+	router.Run()
 }
