@@ -1,3 +1,4 @@
+github.com/Ledwos/ToGoList v0.0.0-20200514133435-131aabfe2bd7 h1:ATxUolyFaMui8RDYR/QwYJHS2IGo+jKD4n/+b7oLBtY=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/elazarl/go-bindata-assetfs v1.0.0/go.mod h1:v+YaWX3bdea5J/mo8dSETolEo7R71Vk1u8bnjau5yw4=
