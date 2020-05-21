@@ -1,13 +1,12 @@
 package main
 
 import (
-	// "os"
-
 	routes "github.com/Ledwos/ToGoList/routing"
 	dbcon "github.com/Ledwos/ToGoList/connectpg"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	_ "github.com/lib/pq"
 )
 
 func main() {

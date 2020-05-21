@@ -3,29 +3,29 @@ package connectpg
 // connection to database and query fxns for routes
 
 import (
-	"fmt"
+	// "fmt"
+	"net/http"
 	"database/sql"
+	"log"
+	"os"
+
+	// routes "github.com/Ledwos/ToGoList/routing"
 
 	_ "github.com/lib/pq"
-)
+	"github.com/joho/godotenv"
 
-const (
-	host = "localhost"
-	port = 5432
-	dbname = "test_db"
-	user = ""
-	password = ""
+	"github.com/gin-gonic/gin"
 )
 
 func Dbconnect() {
+	// load env data
+	loadEnv := godotenv.Load()
+	if loadEnv != nil {
+		log.Fatal("Error loading .env file")
+	}
 
-	// db connection string
-	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s "+
-		"password=%s dbname=%s sslmode=disable",
-		host, port, user, password, dbname)
-	
 	// connect to db
-	db, err := sql.Open("postgres", psqlInfo)
+	db, err := sql.Open("postgres", os.Getenv("DB_STRING"))
 	if err != nil {
 		panic(err)
 	}
@@ -36,5 +36,57 @@ func Dbconnect() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("connect baby!")
+	
 }
+
+var loadEnv = godotenv.Load()
+var db, err = sql.Open("postgres", os.Getenv("DB_STRING"))
+
+func AddTask(c *gin.Context) {
+
+	name := c.Param("name")
+	age := c.Param("age")
+	sqlInsert := `
+		INSERT INTO usr (name, age)
+		VALUES ($1, $2)
+		RETURNING name`
+		id := ""
+		err = db.QueryRow(sqlInsert, name, age).Scan(&id)
+		if err != nil {
+			panic(err)
+		}
+	c.JSON(http.StatusOK, gin.H {
+			"Success": "new user added!",
+	})
+}
+
+func GetAll(c *gin.Context) {
+	rows, err := db.Query("SELECT * FROM usr")
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var id int
+		var name string
+		var age int
+		err = rows.Scan(&id, &name, &age)
+		if err != nil {
+			// panic(err)
+			c.JSON(http.StatusOK, gin.H {
+				"Error": "no rows returned :(",
+			})
+		}
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "Got Data",
+			"ID": id,
+			"Name": name,
+			"Age": age,
+		})
+	}
+	err = rows.Err()
+	if err != nil {
+		panic(err)
+	}
+}
+//  ^ inefficient call
