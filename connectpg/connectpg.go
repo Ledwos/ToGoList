@@ -4,6 +4,7 @@ package connectpg
 
 import (
 	// "fmt"
+	// "encoding/json"
 	"net/http"
 	"database/sql"
 	"log"
@@ -60,33 +61,40 @@ func AddTask(c *gin.Context) {
 	})
 }
 
-func GetAll(c *gin.Context) {
-	rows, err := db.Query("SELECT * FROM usr")
+// struct version
+func GetBetter(c *gin.Context) {
+	// query string
+	sqlStat := `SELECT * FROM usr`
+
+	// query db
+	rows, err := db.Query(sqlStat)
 	if err != nil {
 		panic(err)
 	}
 	defer rows.Close()
+
+	type rec struct {
+		Id int			
+		Name string		
+		Age int			
+	}
+
+	result := []rec{}
+
+	// build response and return JSON
 	for rows.Next() {
 		var id int
 		var name string
 		var age int
 		err = rows.Scan(&id, &name, &age)
 		if err != nil {
-			// panic(err)
-			c.JSON(http.StatusOK, gin.H {
+			c.JSON(http.StatusBadRequest, gin.H {
 				"Error": "no rows returned :(",
 			})
 		}
-		c.JSON(http.StatusOK, gin.H {
-			"Success": "Got Data",
-			"ID": id,
-			"Name": name,
-			"Age": age,
-		})
+		row := rec{id, name, age}
+		result = append(result, row)
 	}
-	err = rows.Err()
-	if err != nil {
-		panic(err)
-	}
+	c.JSON(http.StatusOK, result)
+
 }
-//  ^ inefficient call

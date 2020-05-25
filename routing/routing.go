@@ -31,7 +31,7 @@ func Routes(router *gin.Engine) {
 	//add api routes below
 	api.POST("/add/:name/:age", dbcon.AddTask)
 	// api.GET("/get/:user", dbcon.GetUser)
-	api.GET("/get/all", dbcon.GetAll)
+	api.GET("/better", dbcon.GetBetter)
 
 
 }
