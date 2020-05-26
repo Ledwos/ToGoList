@@ -18,6 +18,6 @@ CREATE TABLE t_table (
 
 -- +goose Down
 -- SQL section 'Down' is executed when this migration is rolled back
-DROP TABLE user;
-DROP TABLE task;
+DROP TABLE u_table;
+DROP TABLE t_table;
 
