@@ -94,12 +94,12 @@ func Loguserin(c *gin.Context) {
 	// 	WHERE u_email = $1 AND u_pass = $2
 	// 	)`
 	sqlLog := `
-		SELECT u_name, u_created_on FROM u_table
+		SELECT u_name, u_id FROM u_table
 		WHERE u_email = $1 AND u_pass = $2
 	`
 	rtn_name := ""
-	rtn_email := ""
-	err := db.QueryRow(sqlLog, logEmail, logPass).Scan(&rtn_name, &rtn_email)
+	rtn_id := ""
+	err := db.QueryRow(sqlLog, logEmail, logPass).Scan(&rtn_name, &rtn_id)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H {
 			"Error": "Make sure you type your email / password correctly",
@@ -108,27 +108,9 @@ func Loguserin(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, gin.H {
 			"Welcome back": rtn_name,
-			"your email": rtn_email,
+			"User id": rtn_id,
 		})
 	}
-}
-
-func Readbody(c *gin.Context) {
-	type Output struct {
-		Something string `form:"something" binding:"required"`
-		Name string `form:"name" binding:"required"`
-		Three int `form:"three" binding:"required"`
-		Newname int `form:"newname" binding:"required"`
-	}
-
-	var json Output
-	c.Bind(&json)
-	// jname := json.Name
-	jsome := json.Something
-	c.JSON(http.StatusOK, gin.H{
-		"Got name": json,
-		"Got thing": jsome,
-	})
 }
 
 func AddTask(c *gin.Context) {
@@ -148,6 +130,165 @@ func AddTask(c *gin.Context) {
 			"Success": "new user added!",
 	})
 }
+
+func NewTask(c *gin.Context) {
+	// task form
+	type taskForm struct {
+		Userid   string	`form:"userid" binding:"required"`
+		Taskname string `form:"taskname" binding:"required"`
+		Taskdesc string `form:"taskdesc" binding:"required"`
+		Taskdate int 	`form:"taskdate" binding:"required"`
+		Tasktime int 	`form:"tasktime" binding:"required"`
+	}
+	var json taskForm
+	c.Bind(&json)
+	// get form data
+	taskname := json.Taskname
+	taskdesc := json.Taskdesc
+	taskdate := json.Taskdate
+	tasktime := json.Tasktime
+	userid := json.Userid
+
+	// multiple queries in case time / date are not sent over
+	if (taskdate == 0 && tasktime == 0) {
+		sqlTask := `
+		INSERT INTO t_table (t_name, t_desc)
+		VALUES ($1, $2)
+		RETURNING t_id
+		`
+		t_id := ""
+		err := db.QueryRow(sqlTask, taskname, taskdesc).Scan(&t_id)
+		if err != nil {
+			panic(err)
+		}
+		ut_res := newTask2(t_id, userid)
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "task added!",
+			"task id": ut_res,
+		})
+	} else if (taskdate == 0) {
+		sqlTask := `
+		INSERT INTO t_table (t_name, t_desc, t_time)
+		VALUES ($1, $2, $3)
+		RETURNING t_id
+		`
+		t_id := ""
+		err := db.QueryRow(sqlTask, taskname, taskdesc, tasktime).Scan(&t_id)
+		if err != nil {
+			panic(err)
+		}
+		ut_res := newTask2(t_id, userid)
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "task added!",
+			"task id": ut_res,
+		})
+	} else if (tasktime == 0) {
+		sqlTask := `
+		INSERT INTO t_table (t_name, t_desc, t_date)
+		VALUES ($1, $2, $3)
+		RETURNING t_id
+		`
+		t_id := ""
+		err := db.QueryRow(sqlTask, taskname, taskdesc, taskdate).Scan(&t_id)
+		if err != nil {
+			panic(err)
+		}
+		ut_res := newTask2(t_id, userid)
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "task added!",
+			"task id": ut_res,
+		})
+	} else {
+		sqlTask := `
+		INSERT INTO t_table (t_name, t_desc, t_date, t_time)
+		VALUES ($1, $2, $3, $4)
+		RETURNING t_id
+		`
+		t_id := ""
+		err := db.QueryRow(sqlTask, taskname, taskdesc, taskdate, tasktime).Scan(&t_id)
+		if err != nil {
+			panic(err)
+		}
+		ut_res := newTask2(t_id, userid)
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "task added!",
+			"task id": ut_res,
+		})
+	}
+
+	// sql query to update bridging table
+	// sqlMany := `
+	// 	INSERT INTO ut_table (utu_id, utt_id)
+	// 	VALUES ($1, $2)
+	// 	RETURNING ut_id
+	// `
+	// ut_id := ""
+	// err2 := db.QueryRow(sqlMany, userid, t_id).Scan(&ut_id)
+	// if err2 != nil {
+	// 	panic(err2)
+	// } else {
+	// 	c.JSON(http.StatusOK, gin.H {
+	// 		"Success": "task added!",
+	// 		"task id": ut_id,
+	// })}
+
+}
+
+func newTask2(t_id, u_id string) string{
+	// sql query to update bridging table
+	sqlMany := `
+		INSERT INTO ut_table (utu_id, utt_id)
+		VALUES ($1, $2)
+		RETURNING ut_id
+	`
+	ut_id := ""
+	err2 := db.QueryRow(sqlMany, u_id, t_id).Scan(&ut_id)
+	if err2 != nil {
+		panic(err2)
+	} else {
+		return ut_id
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// BELOW: for testing only
 
 // struct version
 func GetBetter(c *gin.Context) {
@@ -185,6 +326,89 @@ func GetBetter(c *gin.Context) {
 			})
 		}
 		row := rec{id, name, pass, created, email}
+		result = append(result, row)
+	}
+	c.JSON(http.StatusOK, result)
+
+}
+
+func GetTask(c *gin.Context) {
+	// query string
+	sqlStat := `SELECT * FROM t_table`
+
+	// query db
+	rows, err := db.Query(sqlStat)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	type rec struct {
+		Id int			
+		Name string		
+		Desc string
+		Created string
+		Date string
+		Time string
+		Comp string
+	}
+
+	result := []rec{}
+
+	// build response and return JSON
+	for rows.Next() {
+		var id int			
+		var name string		
+		var desc string
+		var created string
+		var date string
+		var time string
+		var comp string
+		err = rows.Scan(&id, &name, &desc, &created, &date, &time, &comp)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H {
+				"Error": "no rows returned :(",
+			})
+		}
+		row := rec{id, name, desc, created, comp, date, time}
+		result = append(result, row)
+	}
+	c.JSON(http.StatusOK, result)
+
+}
+
+func GetBridge(c *gin.Context) {
+	// query string
+	sqlStat := `SELECT * FROM t_table`
+
+	// query db
+	rows, err := db.Query(sqlStat)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	type rec struct {
+		Uid int
+		Tid int
+		Utid int			
+		
+	}
+
+	result := []rec{}
+
+	// build response and return JSON
+	for rows.Next() {
+		var uid int
+		var tid int
+		var utid int
+		err = rows.Scan(&uid, &tid, &utid)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H {
+				"Error": "no rows returned :(",
+			})
+		}
+		row := rec{uid, tid, utid}
 		result = append(result, row)
 	}
 	c.JSON(http.StatusOK, result)
