@@ -36,7 +36,8 @@ func Routes(router *gin.Engine) {
 	api.POST("/newtask", dbcon.NewTask)
 	// Below: routes for checking tables
 	api.GET("/better", dbcon.GetBetter)
-	api.GET("/tasks", dbcon.GetTask)
+	// api.GET("/tasks", dbcon.GetTask)
 	api.GET("/ut", dbcon.GetBridge)
+	api.GET("tasks/:id", dbcon.GetTasks)
 
 }

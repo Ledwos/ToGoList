@@ -43,6 +43,7 @@ func Dbconnect() {
 var loadEnv = godotenv.Load()
 var db, err = sql.Open("postgres", os.Getenv("HDB_STRING"))
 
+// create new user
 func Newacc(c *gin.Context) {
 	// form data structure
 	type Accform struct {
@@ -76,6 +77,7 @@ func Newacc(c *gin.Context) {
 	}
 }
 
+// user authorisation
 func Loguserin(c *gin.Context) {
 	// form data structure
 	type Logform struct {
@@ -87,12 +89,6 @@ func Loguserin(c *gin.Context) {
 	// get form data
 	logEmail := json.Email
 	logPass := json.Pass
-	// sql query
-	// sqlLog := `
-	// 	SELECT EXISTS(
-	// 	SELECT 1 FROM u_table 
-	// 	WHERE u_email = $1 AND u_pass = $2
-	// 	)`
 	sqlLog := `
 		SELECT u_name, u_id FROM u_table
 		WHERE u_email = $1 AND u_pass = $2
@@ -113,6 +109,8 @@ func Loguserin(c *gin.Context) {
 	}
 }
 
+
+//  add a task
 func AddTask(c *gin.Context) {
 
 	name := c.Param("name")
@@ -215,27 +213,10 @@ func NewTask(c *gin.Context) {
 			"task id": ut_res,
 		})
 	}
-
-	// sql query to update bridging table
-	// sqlMany := `
-	// 	INSERT INTO ut_table (utu_id, utt_id)
-	// 	VALUES ($1, $2)
-	// 	RETURNING ut_id
-	// `
-	// ut_id := ""
-	// err2 := db.QueryRow(sqlMany, userid, t_id).Scan(&ut_id)
-	// if err2 != nil {
-	// 	panic(err2)
-	// } else {
-	// 	c.JSON(http.StatusOK, gin.H {
-	// 		"Success": "task added!",
-	// 		"task id": ut_id,
-	// })}
-
 }
 
+// sql query to update bridging table
 func newTask2(t_id, u_id string) string{
-	// sql query to update bridging table
 	sqlMany := `
 		INSERT INTO ut_table (utu_id, utt_id)
 		VALUES ($1, $2)
@@ -250,27 +231,54 @@ func newTask2(t_id, u_id string) string{
 	}
 }
 
+// Get tasks for given user
+func GetTasks(c *gin.Context) {
+	u_id := c.Param("id")
+	// sql query to get all tasks for user u_id
+	sqlTasks := `
+		SELECT t_name, t_desc, t_date, t_time, t_comp
+		FROM ut_table ut
+		INNER JOIN t_table t ON t.t_id = ut.utt_id
+		WHERE ut.utu_id = $1
+	`
+	// query db
+	rows, err := db.Query(sqlTasks, u_id)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
 
+	type res struct {
+		Tname string		
+		Tdesc string		
+		Tdate string
+		Ttime string
+		Tcomp bool
+	}
 
+	result := []res{}
 
+	// build response and return JSON
+	for rows.Next() {
+		var tname string		
+		var tdesc string		
+		var tdate string
+		var ttime string
+		var tcomp bool
+		err = rows.Scan(&tname, &tdesc, &tdate, &ttime, &tcomp)
+		// if err != nil {
+		// 	// c.JSON(http.StatusBadRequest, gin.H {
+		// 	// 	"Error": "no rows returned :(",
+		// 	// 	"description": err,
+		// 	// })
+		// 	panic(err)
+		// }
+		row := res{tname, tdesc, tdate, ttime, tcomp}
+		result = append(result, row)
+	}
+	c.JSON(http.StatusOK, result)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
