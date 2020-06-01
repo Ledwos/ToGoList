@@ -231,12 +231,13 @@ func newTask2(t_id, u_id string) string{
 	}
 }
 
+// Change u_id back to body instead of url?
 // Get tasks for given user
 func GetTasks(c *gin.Context) {
 	u_id := c.Param("id")
 	// sql query to get all tasks for user u_id
 	sqlTasks := `
-		SELECT t_name, t_desc, t_date, t_time, t_comp
+		SELECT t_id, t_name, t_desc, t_date, t_time, t_comp
 		FROM ut_table ut
 		INNER JOIN t_table t ON t.t_id = ut.utt_id
 		WHERE ut.utu_id = $1
@@ -249,6 +250,7 @@ func GetTasks(c *gin.Context) {
 	defer rows.Close()
 
 	type res struct {
+		Tid   int
 		Tname string		
 		Tdesc string		
 		Tdate string
@@ -260,12 +262,13 @@ func GetTasks(c *gin.Context) {
 
 	// build response and return JSON
 	for rows.Next() {
+		var tid   int
 		var tname string		
 		var tdesc string		
 		var tdate string
 		var ttime string
 		var tcomp bool
-		err = rows.Scan(&tname, &tdesc, &tdate, &ttime, &tcomp)
+		err = rows.Scan(&tid, &tname, &tdesc, &tdate, &ttime, &tcomp)
 		// if err != nil {
 		// 	// c.JSON(http.StatusBadRequest, gin.H {
 		// 	// 	"Error": "no rows returned :(",
@@ -273,152 +276,100 @@ func GetTasks(c *gin.Context) {
 		// 	// })
 		// 	panic(err)
 		// }
-		row := res{tname, tdesc, tdate, ttime, tcomp}
+		row := res{tid, tname, tdesc, tdate, ttime, tcomp}
 		result = append(result, row)
 	}
 	c.JSON(http.StatusOK, result)
 
 }
 
+// change complete status of task (probably some on-click fxn)
 
+func CompTask(c *gin.Context) {
+	// task complete form
+	type Comp struct {
+		// Comp	bool	`form:"taskcomp" binding:"required"`
+		Tid 	int		`form:"taskid" binding:"required"`
+	}
+	var json Comp
+	c.Bind(&json)
+	// get form data
+	// compstat := json.Comp
+	taskid := json.Tid
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// BELOW: for testing only
-
-// struct version
-func GetBetter(c *gin.Context) {
-	// query string
-	sqlStat := `SELECT * FROM u_table`
-
-	// query db
-	rows, err := db.Query(sqlStat)
+	// set to complete query
+	sqlComp := `
+		UPDATE t_table
+		SET t_comp = NOT t_comp
+		WHERE t_id = $1 
+	`
+	_, err := db.Exec(sqlComp, taskid)
 	if err != nil {
 		panic(err)
+	} else {
+		c.JSON(http.StatusOK, gin.H {
+			"Response": 1,
+		})
 	}
-	defer rows.Close()
-
-	type rec struct {
-		Id int			
-		Name string		
-		Pass string
-		Created string
-		Email string
-	}
-
-	result := []rec{}
-
-	// build response and return JSON
-	for rows.Next() {
-		var id int
-		var name string
-		var pass string
-		var created string
-		var email string
-		err = rows.Scan(&id, &name, &pass, &created, &email)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H {
-				"Error": "no rows returned :(",
-			})
-		}
-		row := rec{id, name, pass, created, email}
-		result = append(result, row)
-	}
-	c.JSON(http.StatusOK, result)
-
 }
 
-func GetTask(c *gin.Context) {
-	// query string
-	sqlStat := `SELECT * FROM t_table`
+// update task details (multiple functions depending on vars)
+func UpdateTask(c *gin.Context) {
+	// task form
+	type taskForm struct {
+		Taskid	 int	`form:"taskid" binding:"required"`
+		Taskname string `form:"taskname" binding:"required"`
+		Taskdesc string `form:"taskdesc" binding:"required"`
+		Taskdate int 	`form:"taskdate" binding:"required"`
+		Tasktime int 	`form:"tasktime" binding:"required"`
+	}
+	var json taskForm
+	c.Bind(&json)
+	// get form data
+	taskid := json.Taskid
+	taskname := json.Taskname
+	taskdesc := json.Taskdesc
+	taskdate := json.Taskdate
+	tasktime := json.Tasktime
 
-	// query db
-	rows, err := db.Query(sqlStat)
+	if (taskdesc == "" && taskdate == 0 && tasktime == 0) {
+		sqlTask := `UPDATE t_table
+			SET t_name = $2
+			WHERE t_id = $1
+		`
+	_, err := db.Exec(sqlTask, taskid, taskname)
 	if err != nil {
 		panic(err)
-	}
-	defer rows.Close()
-
-	type rec struct {
-		Id int			
-		Name string		
-		Desc string
-		Created string
-		Date string
-		Time string
-		Comp string
-	}
-
-	result := []rec{}
-
-	// build response and return JSON
-	for rows.Next() {
-		var id int			
-		var name string		
-		var desc string
-		var created string
-		var date string
-		var time string
-		var comp string
-		err = rows.Scan(&id, &name, &desc, &created, &date, &time, &comp)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H {
-				"Error": "no rows returned :(",
-			})
+	} else {
+		c.JSON(http.StatusOK, gin.H {
+			"Response": 1,
+		})
 		}
-		row := rec{id, name, desc, created, comp, date, time}
-		result = append(result, row)
 	}
-	c.JSON(http.StatusOK, result)
-
 }
 
-func GetBridge(c *gin.Context) {
-	// query string
-	sqlStat := `SELECT * FROM t_table`
 
-	// query db
-	rows, err := db.Query(sqlStat)
+// delete task
+func DeleteTask(c *gin.Context) {
+	// get task id
+	type taskDel struct {
+		Taskid int `form:"taskid" binding:"required"`
+	}
+	var json taskDel
+	c.Bind(&json)
+	taskid := json.Taskid
+	// delete query
+	sqlDel := `
+		DELETE FROM t_table
+		WHERE t_id = $1
+	`
+	_, err := db.Exec(sqlDel, taskid)
 	if err != nil {
 		panic(err)
+	} else {
+		c.JSON(http.StatusOK, gin.H {
+			"response": 1,
+		})
 	}
-	defer rows.Close()
-
-	type rec struct {
-		Uid int
-		Tid int
-		Utid int			
-		
-	}
-
-	result := []rec{}
-
-	// build response and return JSON
-	for rows.Next() {
-		var uid int
-		var tid int
-		var utid int
-		err = rows.Scan(&uid, &tid, &utid)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H {
-				"Error": "no rows returned :(",
-			})
-		}
-		row := rec{uid, tid, utid}
-		result = append(result, row)
-	}
-	c.JSON(http.StatusOK, result)
-
 }
+
