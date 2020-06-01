@@ -35,6 +35,10 @@ func Routes(router *gin.Engine) {
 	api.GET("/login", dbcon.Loguserin)
 	api.POST("/newtask", dbcon.NewTask)
 	api.GET("tasks/:id", dbcon.GetTasks)
-	api.POST("task/complete", dbcon.CompTask)
+	api.POST("task/u/complete", dbcon.CompTask)
+	api.POST("task/u/name", dbcon.UpdateName)
+	api.POST("task/u/desc", dbcon.UpdateDesc)
+	api.POST("task/u/date", dbcon.UpdateDate)
+	api.POST("task/u/time", dbcon.UpdateTime)
 	api.DELETE("task/del", dbcon.DeleteTask)
 }

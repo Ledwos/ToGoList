@@ -314,29 +314,22 @@ func CompTask(c *gin.Context) {
 }
 
 // update task details (multiple functions depending on vars)
-func UpdateTask(c *gin.Context) {
+func UpdateName(c *gin.Context) {
 	// task form
 	type taskForm struct {
 		Taskid	 int	`form:"taskid" binding:"required"`
 		Taskname string `form:"taskname" binding:"required"`
-		Taskdesc string `form:"taskdesc" binding:"required"`
-		Taskdate int 	`form:"taskdate" binding:"required"`
-		Tasktime int 	`form:"tasktime" binding:"required"`
 	}
 	var json taskForm
 	c.Bind(&json)
 	// get form data
 	taskid := json.Taskid
 	taskname := json.Taskname
-	taskdesc := json.Taskdesc
-	taskdate := json.Taskdate
-	tasktime := json.Tasktime
 
-	if (taskdesc == "" && taskdate == 0 && tasktime == 0) {
-		sqlTask := `UPDATE t_table
-			SET t_name = $2
-			WHERE t_id = $1
-		`
+	sqlTask := `UPDATE t_table
+		SET t_name = $2
+		WHERE t_id = $1
+	`
 	_, err := db.Exec(sqlTask, taskid, taskname)
 	if err != nil {
 		panic(err)
@@ -344,7 +337,87 @@ func UpdateTask(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H {
 			"Response": 1,
 		})
-		}
+	}
+}
+
+// update task details (multiple functions depending on vars)
+func UpdateDesc(c *gin.Context) {
+	// task form
+	type taskForm struct {
+		Taskid	 int	`form:"taskid" binding:"required"`
+		Taskdesc string `form:"taskdesc" binding:"required"`
+	}
+	var json taskForm
+	c.Bind(&json)
+	// get form data
+	taskid := json.Taskid
+	taskdesc := json.Taskdesc
+	
+	sqlTask := `UPDATE t_table
+		SET t_desc = $2
+		WHERE t_id = $1
+	`
+	_, err := db.Exec(sqlTask, taskid, taskdesc)
+	if err != nil {
+		panic(err)
+	} else {
+		c.JSON(http.StatusOK, gin.H {
+			"Response": 1,
+		})
+	}
+}
+
+// update task details (multiple functions depending on vars)
+func UpdateDate(c *gin.Context) {
+	// task form
+	type taskForm struct {
+		Taskid	 int	`form:"taskid" binding:"required"`
+		Taskdate int 	`form:"taskdate" binding:"required"`
+	}
+	var json taskForm
+	c.Bind(&json)
+	// get form data
+	taskid := json.Taskid
+	taskdate := json.Taskdate
+	
+	sqlTask := `UPDATE t_table
+		SET t_date = $2
+		WHERE t_id = $1
+	`
+	_, err := db.Exec(sqlTask, taskid, taskdate)
+	if err != nil {
+		panic(err)
+	} else {
+		c.JSON(http.StatusOK, gin.H {
+			"Response": 1,
+		})
+	}
+}
+
+// update task details (multiple functions depending on vars)
+func UpdateTime(c *gin.Context) {
+	// task form
+	type taskForm struct {
+		Taskid	 int	`form:"taskid" binding:"required"`
+		Tasktime string `form:"tasktime" binding:"required"`
+	}
+	var json taskForm
+	c.Bind(&json)
+	// get form data
+	taskid := json.Taskid
+	tasktime := json.Tasktime
+	
+	sqlTask := `UPDATE t_table
+		SET t_time = $2
+		WHERE t_id = $1
+	`
+	_, err := db.Exec(sqlTask, taskid, tasktime)
+	if err != nil {
+		panic(err)
+	} else {
+		c.JSON(http.StatusOK, gin.H {
+			"Response": 1,
+		})
 	}
 }
 
