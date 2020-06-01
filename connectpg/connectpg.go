@@ -3,14 +3,10 @@ package connectpg
 // connection to database and query fxns for routes
 
 import (
-	// "fmt"
-	// "encoding/json"
 	"net/http"
 	"database/sql"
 	"log"
 	"os"
-
-	// routes "github.com/Ledwos/ToGoList/routing"
 
 	_ "github.com/lib/pq"
 	"github.com/joho/godotenv"
@@ -36,8 +32,7 @@ func Dbconnect() {
 	err = db.Ping()
 	if err != nil {
 		panic(err)
-	}
-	
+	}	
 }
 
 var loadEnv = godotenv.Load()
@@ -109,26 +104,7 @@ func Loguserin(c *gin.Context) {
 	}
 }
 
-
-//  add a task
-func AddTask(c *gin.Context) {
-
-	name := c.Param("name")
-	age := c.Param("age")
-	sqlInsert := `
-		INSERT INTO usr (name, age)
-		VALUES ($1, $2)
-		RETURNING name`
-		id := ""
-		err = db.QueryRow(sqlInsert, name, age).Scan(&id)
-		if err != nil {
-			panic(err)
-		}
-	c.JSON(http.StatusOK, gin.H {
-			"Success": "new user added!",
-	})
-}
-
+// add new task for user
 func NewTask(c *gin.Context) {
 	// task form
 	type taskForm struct {
@@ -269,13 +245,6 @@ func GetTasks(c *gin.Context) {
 		var ttime string
 		var tcomp bool
 		err = rows.Scan(&tid, &tname, &tdesc, &tdate, &ttime, &tcomp)
-		// if err != nil {
-		// 	// c.JSON(http.StatusBadRequest, gin.H {
-		// 	// 	"Error": "no rows returned :(",
-		// 	// 	"description": err,
-		// 	// })
-		// 	panic(err)
-		// }
 		row := res{tid, tname, tdesc, tdate, ttime, tcomp}
 		result = append(result, row)
 	}
@@ -288,16 +257,13 @@ func GetTasks(c *gin.Context) {
 func CompTask(c *gin.Context) {
 	// task complete form
 	type Comp struct {
-		// Comp	bool	`form:"taskcomp" binding:"required"`
 		Tid 	int		`form:"taskid" binding:"required"`
 	}
 	var json Comp
 	c.Bind(&json)
 	// get form data
-	// compstat := json.Comp
 	taskid := json.Tid
-
-	// set to complete query
+	// sql query
 	sqlComp := `
 		UPDATE t_table
 		SET t_comp = NOT t_comp
@@ -313,7 +279,7 @@ func CompTask(c *gin.Context) {
 	}
 }
 
-// update task details (multiple functions depending on vars)
+// update task name
 func UpdateName(c *gin.Context) {
 	// task form
 	type taskForm struct {
@@ -340,7 +306,7 @@ func UpdateName(c *gin.Context) {
 	}
 }
 
-// update task details (multiple functions depending on vars)
+// update task description
 func UpdateDesc(c *gin.Context) {
 	// task form
 	type taskForm struct {
@@ -367,7 +333,7 @@ func UpdateDesc(c *gin.Context) {
 	}
 }
 
-// update task details (multiple functions depending on vars)
+// update task date
 func UpdateDate(c *gin.Context) {
 	// task form
 	type taskForm struct {
@@ -394,7 +360,7 @@ func UpdateDate(c *gin.Context) {
 	}
 }
 
-// update task details (multiple functions depending on vars)
+// update task time
 func UpdateTime(c *gin.Context) {
 	// task form
 	type taskForm struct {

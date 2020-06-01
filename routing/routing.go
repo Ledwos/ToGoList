@@ -2,7 +2,6 @@ package routing
 
 import (
 	"net/http"
-	// "database/sql"
 
 	dbcon "github.com/Ledwos/ToGoList/connectpg"
 
@@ -29,8 +28,6 @@ func Routes(router *gin.Engine) {
 	}
 
 	//add api routes below
-	api.POST("/add/:name/:age", dbcon.AddTask)
-	// api.GET("/get/:user", dbcon.GetUser)
 	api.POST("/newacc", dbcon.Newacc)
 	api.GET("/login", dbcon.Loguserin)
 	api.POST("/newtask", dbcon.NewTask)
