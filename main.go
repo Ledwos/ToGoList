@@ -1,7 +1,7 @@
 package main
 
 import (
-	"os"
+	// "os"
 
 	routes "github.com/Ledwos/ToGoList/routing"
 	dbcon "github.com/Ledwos/ToGoList/connectpg"
@@ -20,13 +20,13 @@ func main() {
 	router := gin.Default()
 
 	//serve static files (html / css / js)
-	router.Use(static.Serve("/", static.LocalFile("./", true)))
+	router.Use(static.Serve("/", static.LocalFile("./tglfront/build", true)))
 
 	//call route handler
 	routes.Routes(router)
 
 	// start / run server on given port
-	router.Run(":"+os.Getenv("PORT"))
+	// router.Run(":"+os.Getenv("PORT"))
 	// CHANGE router.Run AND UNCOMMENT OS IMPORT WHEN DEPLOYING!
-	// router.Run()
+	router.Run()
 }
