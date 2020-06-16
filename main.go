@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
+	"github.com/gin-contrib/cors"
 	_ "github.com/lib/pq"
 )
 
@@ -21,6 +22,8 @@ func main() {
 
 	//serve static files (html / css / js)
 	router.Use(static.Serve("/", static.LocalFile("./tglfront/build", true)))
+	//cors
+	router.Use(cors.Default())
 
 	//call route handler
 	routes.Routes(router)

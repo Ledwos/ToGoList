@@ -4,7 +4,7 @@ import AddTask from './AddTask';
 const TaskComp = (props) => {
     
     const [tasks, setTasks] = useState([]);
-    const [taskForm, setTaskForm] = useState(false);
+    const [taskForm, setTaskForm] = useState(true);
 
     useEffect(() => {
         getTasks();
@@ -33,10 +33,18 @@ const TaskComp = (props) => {
         let hr;
         let min;
         let formhr = document.getElementById('timeH').value;
+        console.log(typeof(formhr));
         let formmin = document.getElementById('timeM').value;
         formhr.length === 1 ? hr = "0" + formhr : hr = formhr;
         formmin.length === 1 ? min = "0" + formmin : min = formmin;
-        return hr + min + "00";
+        formhr === '' ? hr = "00" : hr = hr;
+        formmin === '' ? min = "00" : min = min;
+        let tstring = hr + min + "00";
+        if (parseInt(tstring) === 0) {
+            return '';
+        } else {
+            return tstring;
+        }
     }
 
     const dateString = () => {
@@ -49,7 +57,12 @@ const TaskComp = (props) => {
         formdd.length === 1 ? dd = "0" + formdd : dd = formdd;
         formmm.length === 1 ? mm = "0" + formmm : mm = formmm;
         formyy.length === 1 ? yy = "0" + formyy : yy = formyy;
-        return yy + mm + dd;
+        let dstring = yy + mm + dd;
+        if (dd === '' || mm === '' || yy === '' ) {
+            return '';
+        } else {
+            return dstring;
+        }
     }
 
     const handleSubmit = (e) => {
@@ -65,6 +78,20 @@ const TaskComp = (props) => {
             "tDesc": tdesc,
             "tdate": tdate,
             "tTime": ttime
+        });
+        fetch('http://www.localhost:8080/api/newtask', {
+            mode: 'cors',
+            method: 'POST',
+            body: {
+                "userid": uid,
+                "taskname": tname,
+                "taskdesc": tdesc,
+                "taskdate": tdate,
+                "tasktime": ttime
+            }
+        })
+        .then((response) => {
+            console.log("status: " + response.status)
         });
     }
 

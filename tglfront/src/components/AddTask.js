@@ -20,7 +20,7 @@ const AddTask = (props) => {
                 </div>
                 <label for='tasktime'>Time:</label>
                 <div id='tasktime'>
-                    <input type='number' min="0" max="24" placeholder="00" id="timeH"></input> :
+                    <input type='number' min="0" max="23" placeholder="00" id="timeH"></input> :
                     <input type='number' min="0" max="59" placeholder="00" id="timeM"></input>
                 </div>
                 <button type='submit'>Add!</button>
