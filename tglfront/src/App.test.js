@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // import { render } from '@testing-library/react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import App from './App';
 
 test('checking jest/enzyme are working', () => {
@@ -22,6 +22,14 @@ describe('App', () => {
   // write test cases of what component should
   // render depending on the state values.
 });
+
+test('setloggedIn updates loggedin state', () => {
+  let wrapper = mount(<App />);
+  console.log(wrapper.loggedIn);
+  expect(wrapper.loggedIn).toEqual(false);
+});
+
+
 
 
 

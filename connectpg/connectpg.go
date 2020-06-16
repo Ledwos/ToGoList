@@ -248,7 +248,9 @@ func GetTasks(c *gin.Context) {
 		row := res{tid, tname, tdesc, tdate, ttime, tcomp}
 		result = append(result, row)
 	}
-	c.JSON(http.StatusOK, result)
+	c.Header("Access-Control-Allow-Origin", "*")
+    // c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
+	c.JSON(http.StatusOK, &result)
 
 }
 
