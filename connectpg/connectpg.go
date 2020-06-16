@@ -406,8 +406,15 @@ func DeleteTask(c *gin.Context) {
 	`
 	_, err := db.Exec(sqlDel, taskid)
 	if err != nil {
-		panic(err)
+		// panic(err)
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
+		c.JSON(http.StatusOK, gin.H {
+			"response": "Something went wrong",
+		})
 	} else {
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
 		c.JSON(http.StatusOK, gin.H {
 			"response": 1,
 		})
