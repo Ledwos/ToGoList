@@ -528,7 +528,7 @@ func UpdateTime(c *gin.Context) {
 func DeleteTask(c *gin.Context) {
 	// get task id
 	type taskDel struct {
-		Taskid int `form:"taskid" binding:"required"`
+		Taskid int `json:"taskid" binding:"required"`
 	}
 	var json taskDel
 	c.Bind(&json)
@@ -541,19 +541,13 @@ func DeleteTask(c *gin.Context) {
 	_, err := db.Exec(sqlDel, taskid)
 	if err != nil {
 		panic(err)
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-		// c.JSON(http.StatusOK, gin.H {
-		// 	"response": "Something went wrong",
-		// })
-		// return
 	} else {
 		// c.Header("Access-Control-Allow-Origin", "*")
 		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+		// c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+        // c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+        // c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+        // c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 		c.JSON(http.StatusOK, gin.H {
 			"response": 1,
 		})
