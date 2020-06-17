@@ -20,6 +20,25 @@ const TaskComp = (props) => {
         setTaskForm(!taskForm);
     };
 
+    const compTask = (e) => {
+        let taskId = parseInt(e.target.id);
+        fetch('http://localhost:8080/api/task/u/complete', {
+            mode: 'cors',
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({"taskid": taskId})
+        }).then((response) => {
+            if (response.status === 200) {
+                getTasks();
+            } else {
+                console.log("error: " + response.status)
+            }
+        })
+    }
+
     const delTask = (e) => {
         let taskId = parseInt(e.target.id);
         fetch('http://localhost:8080/api/task/del', {
@@ -125,7 +144,7 @@ const TaskComp = (props) => {
                 <div key={task.Tid}>
                     <div className='taskHeader'>
                         <h4>{task.Tname}</h4>
-                        <p id={task.Tid} onClick={delTask}>X</p>
+                        <p id={task.Tid} onClick={compTask}>X</p>
                     </div>
                     <div className='taskDesc'>
                         {task.Tdesc}

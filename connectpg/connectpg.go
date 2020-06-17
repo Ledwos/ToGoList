@@ -347,10 +347,10 @@ func GetTasks(c *gin.Context) {
 	u_id := c.Param("id")
 	// sql query to get all tasks for user u_id
 	sqlTasks := `
-		SELECT t_id, t_name, t_desc, t_date, t_time, t_comp
+		SELECT t_id, t_name, t_desc, t_date, t_time
 		FROM ut_table ut
 		INNER JOIN t_table t ON t.t_id = ut.utt_id
-		WHERE ut.utu_id = $1
+		WHERE t_comp = false AND ut.utu_id = $1
 	`
 	// query db
 	rows, err := db.Query(sqlTasks, u_id)
@@ -365,7 +365,7 @@ func GetTasks(c *gin.Context) {
 		Tdesc string		
 		Tdate string
 		Ttime string
-		Tcomp bool
+		// Tcomp bool
 	}
 
 	result := []res{}
@@ -377,9 +377,9 @@ func GetTasks(c *gin.Context) {
 		var tdesc string		
 		var tdate string
 		var ttime string
-		var tcomp bool
-		err = rows.Scan(&tid, &tname, &tdesc, &tdate, &ttime, &tcomp)
-		row := res{tid, tname, tdesc, tdate, ttime, tcomp}
+		// var tcomp bool
+		err = rows.Scan(&tid, &tname, &tdesc, &tdate, &ttime)
+		row := res{tid, tname, tdesc, tdate, ttime}
 		result = append(result, row)
 	}
 	c.Header("Access-Control-Allow-Origin", "*")
@@ -393,7 +393,7 @@ func GetTasks(c *gin.Context) {
 func CompTask(c *gin.Context) {
 	// task complete form
 	type Comp struct {
-		Tid 	int		`form:"taskid" binding:"required"`
+		Tid 	int		`json:"taskid" binding:"required"`
 	}
 	var json Comp
 	c.Bind(&json)
