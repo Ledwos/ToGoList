@@ -6,7 +6,7 @@ const AddTask = (props) => {
         <div>
             <form onSubmit={props.handleSubmit} method='POST'>
                 <label for='taskname'>Title:</label>
-                <input type='text' id='taskname'></input>
+                <input type='text' id='taskname' required></input>
                 <label for='taskdesc'>Description:</label>
                 <textarea id='taskdesc' placeholder='(optional)'></textarea>
                 <label for='taskdate'>Date:</label>

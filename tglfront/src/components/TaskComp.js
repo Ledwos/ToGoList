@@ -14,11 +14,11 @@ const TaskComp = (props) => {
         fetch(`http://www.localhost:8080/api/tasks/${props.user}`)
         .then(res => res.json())
         .then(data => setTasks(data));
-    }
+    };
 
     const toggleForm = () => {
         setTaskForm(!taskForm);
-    }
+    };
 
     const delTask = (e) => {
         let taskId = e.target.id;
@@ -29,7 +29,7 @@ const TaskComp = (props) => {
         }).then((response) => {
             console.log(response.status);
         })
-    }
+    };
 
     const timeString = () => {
         let hr;
@@ -43,11 +43,11 @@ const TaskComp = (props) => {
         formmin === '' ? min = "00" : min = min;
         let tstring = hr + min + "00";
         if (parseInt(tstring) === 0) {
-            return '';
+            return 'none';
         } else {
             return tstring;
         }
-    }
+    };
 
     const dateString = () => {
         let dd;
@@ -61,17 +61,26 @@ const TaskComp = (props) => {
         formyy.length === 1 ? yy = "0" + formyy : yy = formyy;
         let dstring = yy + mm + dd;
         if (dd === '' || mm === '' || yy === '' ) {
-            return '';
+            return 'none';
         } else {
             return dstring;
         }
-    }
+    };
+
+    const descString = () => {
+        let desc = document.getElementById('taskdesc').value;
+        if (desc == '') {
+            return 'none';
+        } else {
+            return desc;
+        };
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const uid = props.user;
+        const uid = JSON.stringify(props.user);
         const tname = document.getElementById('taskname').value;
-        const tdesc = document.getElementById('taskdesc').value;
+        const tdesc = descString();
         const tdate = dateString();
         const ttime = timeString();
         console.dir({
@@ -83,19 +92,23 @@ const TaskComp = (props) => {
         });
         fetch('http://www.localhost:8080/api/newtask', {
             mode: 'cors',
-            method: 'POST',
-            body: {
+            method: 'post',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
                 "userid": uid,
                 "taskname": tname,
                 "taskdesc": tdesc,
                 "taskdate": tdate,
                 "tasktime": ttime
-            }
+            })
         })
         .then((response) => {
             console.log("status: " + response.status)
         });
-    }
+    };
 
     return (
         <div>
