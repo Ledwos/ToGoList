@@ -37,5 +37,5 @@ func Routes(router *gin.Engine) {
 	api.POST("task/u/desc", dbcon.UpdateDesc)
 	api.POST("task/u/date", dbcon.UpdateDate)
 	api.POST("task/u/time", dbcon.UpdateTime)
-	api.DELETE("task/del", dbcon.DeleteTask)
+	api.POST("task/del", dbcon.DeleteTask)
 }

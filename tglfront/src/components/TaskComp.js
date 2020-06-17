@@ -23,10 +23,12 @@ const TaskComp = (props) => {
     const delTask = (e) => {
         let taskId = e.target.id;
         console.log("I delete you! number: " + taskId)
-        // fetch('http://www.localhost:8080/api/task/del', {
-        //     method: 'DELETE',
-        //     body: JSON.stringify({taskid: tId})
-        // })
+        fetch('http://localhost:8080/api/task/del', {
+            method: 'POST',
+            body: JSON.stringify({taskid: taskId})
+        }).then((response) => {
+            console.log(response.status);
+        })
     }
 
     const timeString = () => {

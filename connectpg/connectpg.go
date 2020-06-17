@@ -15,7 +15,7 @@ import (
 )
 
 func Dbconnect() {
-	// load env data
+	// load env data - DEVELOPMENT ONLY
 	loadEnv := godotenv.Load()
 	if loadEnv != nil {
 		log.Fatal("Error loading .env file")
@@ -104,15 +104,15 @@ func Loguserin(c *gin.Context) {
 	}
 }
 
-// add new task for user
+// // add new task for user
 func NewTask(c *gin.Context) {
 	// task form
 	type taskForm struct {
-		Userid   string	`form:"userid" binding:"required"`
-		Taskname string `form:"taskname" binding:"required"`
-		Taskdesc string `form:"taskdesc" binding:"required"`
-		Taskdate int 	`form:"taskdate" binding:"required"`
-		Tasktime int 	`form:"tasktime" binding:"required"`
+		Userid   string	`json:"userid"   binding:"required"`
+		Taskname string `json:"taskname" binding:"required"`
+		Taskdesc string `json:"taskdesc" binding:"required"`
+		Taskdate string `json:"taskdate" binding:"required"`
+		Tasktime string `json:"tasktime" binding:"required"`
 	}
 	var json taskForm
 	c.Bind(&json)
@@ -123,8 +123,64 @@ func NewTask(c *gin.Context) {
 	tasktime := json.Tasktime
 	userid := json.Userid
 
-	// multiple queries in case time / date are not sent over
-	if (taskdate == 0 && tasktime == 0) {
+	//queries for all cases
+
+	// name only
+	if (taskdesc == "none" && taskdate == "none" && tasktime == "none") {
+		sqlTask := `
+		INSERT INTO t_table (t_name)
+		VALUES ($1)
+		RETURNING t_id
+		`
+		t_id := ""
+		err := db.QueryRow(sqlTask, taskname).Scan(&t_id)
+		if err != nil {
+			panic(err)
+		}
+		ut_res := newTask2(t_id, userid)
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "task added!",
+			"task id": ut_res,
+		})
+		return
+	// no desc / date
+	} else if (taskdesc == "none" && taskdate == "none") {
+		sqlTask := `
+		INSERT INTO t_table (t_name, t_time)
+		VALUES ($1, $2)
+		RETURNING t_id
+		`
+		t_id := ""
+		err := db.QueryRow(sqlTask, taskname, tasktime).Scan(&t_id)
+		if err != nil {
+			panic(err)
+		}
+		ut_res := newTask2(t_id, userid)
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "task added!",
+			"task id": ut_res,
+		})
+		return
+	// no desc / time
+	} else if (taskdesc == "none" && tasktime == "none") {
+		sqlTask := `
+		INSERT INTO t_table (t_name, t_date)
+		VALUES ($1, $2)
+		RETURNING t_id
+		`
+		t_id := ""
+		err := db.QueryRow(sqlTask, taskname, taskdate).Scan(&t_id)
+		if err != nil {
+			panic(err)
+		}
+		ut_res := newTask2(t_id, userid)
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "task added!",
+			"task id": ut_res,
+		})
+		return
+	// no date / time
+	} else if (taskdate == "none" && tasktime == "none") {
 		sqlTask := `
 		INSERT INTO t_table (t_name, t_desc)
 		VALUES ($1, $2)
@@ -136,16 +192,33 @@ func NewTask(c *gin.Context) {
 			panic(err)
 		}
 		ut_res := newTask2(t_id, userid)
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 		c.JSON(http.StatusOK, gin.H {
 			"Success": "task added!",
 			"task id": ut_res,
 		})
 		return
-	} else if (taskdate == 0) {
+
+	// no desc
+	} else if (taskdesc == "none") {
+		sqlTask := `
+		INSERT INTO t_table (t_name, t_date, t_time)
+		VALUES ($1, $2, $3)
+		RETURNING t_id
+		`
+		t_id := ""
+		err := db.QueryRow(sqlTask, taskname, taskdate, tasktime).Scan(&t_id)
+		if err != nil {
+			panic(err)
+		}
+		ut_res := newTask2(t_id, userid)
+		c.JSON(http.StatusOK, gin.H {
+			"Success": "task added!",
+			"task id": ut_res,
+		})
+		return
+
+	// no date
+	} else if (taskdate == "none") {
 		sqlTask := `
 		INSERT INTO t_table (t_name, t_desc, t_time)
 		VALUES ($1, $2, $3)
@@ -157,16 +230,13 @@ func NewTask(c *gin.Context) {
 			panic(err)
 		}
 		ut_res := newTask2(t_id, userid)
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 		c.JSON(http.StatusOK, gin.H {
 			"Success": "task added!",
 			"task id": ut_res,
 		})
 		return
-	} else if (tasktime == 0) {
+	// no time
+	} else if (tasktime == "none") {
 		sqlTask := `
 		INSERT INTO t_table (t_name, t_desc, t_date)
 		VALUES ($1, $2, $3)
@@ -178,15 +248,12 @@ func NewTask(c *gin.Context) {
 			panic(err)
 		}
 		ut_res := newTask2(t_id, userid)
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 		c.JSON(http.StatusOK, gin.H {
 			"Success": "task added!",
 			"task id": ut_res,
 		})
 		return
+	// all fields completed
 	} else {
 		sqlTask := `
 		INSERT INTO t_table (t_name, t_desc, t_date, t_time)
@@ -199,10 +266,6 @@ func NewTask(c *gin.Context) {
 			panic(err)
 		}
 		ut_res := newTask2(t_id, userid)
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 		c.JSON(http.StatusOK, gin.H {
 			"Success": "task added!",
 			"task id": ut_res,
@@ -211,7 +274,58 @@ func NewTask(c *gin.Context) {
 	}
 }
 
-// sql query to update bridging table
+
+
+// ALTERNATE ADD A USER 
+// add new task for user
+// func NewTask(c *gin.Context) {
+// 	// task json data
+// 	type taskForm struct {
+// 		Userid   string	`json:"userid" binding:"required"`
+// 		Taskname string `json:"taskname" binding:"required"`
+// 		Taskdesc string `json:"taskdesc" binding:"required"`
+// 		Taskdate string `json:"taskdate" binding:"required"`
+// 		Tasktime string `json:"tasktime" binding:"required"`
+// 	}
+// 	var json taskForm
+// 	c.Bind(&json)
+// 	// get form data
+// 	userid := json.Userid
+// 	taskname := json.Taskname
+// 	taskdesc := json.Taskdesc
+// 	taskdate := json.Taskdate
+// 	tasktime := json.Tasktime
+
+// 	type res struct {
+// 		Uid   string
+// 		Tname string		
+// 		Tdesc string		
+// 		Tdate string
+// 		Ttime string
+// 	}
+
+// 	result := []res{}
+
+// 	empty := " "
+// 	if taskdesc == " " {
+// 		empty = "none"
+// 	} else {
+// 		empty = taskdesc
+// 	}
+
+// 	row := res{userid, taskname, empty, taskdate, tasktime}
+// 	result = append(result, row)
+
+// 		// c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+//         // c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+//         // c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+//         // c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
+// 	c.JSON(http.StatusOK, result)
+// 	return
+// }
+
+
+// sql query to update bridging table UNCOMMENT
 func newTask2(t_id, u_id string) string{
 	sqlMany := `
 		INSERT INTO ut_table (utu_id, utt_id)
@@ -426,18 +540,24 @@ func DeleteTask(c *gin.Context) {
 	`
 	_, err := db.Exec(sqlDel, taskid)
 	if err != nil {
-		// panic(err)
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-		c.JSON(http.StatusOK, gin.H {
-			"response": "Something went wrong",
-		})
+		panic(err)
+		// c.Header("Access-Control-Allow-Origin", "*")
+		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
+		// c.JSON(http.StatusOK, gin.H {
+		// 	"response": "Something went wrong",
+		// })
+		// return
 	} else {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
+		// c.Header("Access-Control-Allow-Origin", "*")
+		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+        c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
+        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+        c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 		c.JSON(http.StatusOK, gin.H {
 			"response": 1,
 		})
+		return
 	}
 }
 

@@ -30,6 +30,6 @@ func main() {
 
 	// start / run server on given port
 	// router.Run(":"+os.Getenv("PORT"))
-	// CHANGE router.Run AND UNCOMMENT OS IMPORT WHEN DEPLOYING!
+	// CHANGE router.Run AND UNCOMMENT OS IMPORT WHEN DEPLOYING! - DEVELOPMENT ONLY
 	router.Run()
 }
