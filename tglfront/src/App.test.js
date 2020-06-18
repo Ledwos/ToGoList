@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 // import { render } from '@testing-library/react';
 import { shallow, mount } from 'enzyme';
 import App from './App';
+import renderer from 'react-test-renderer';
 
 test('checking jest/enzyme are working', () => {
   const num = 5;
@@ -15,19 +16,26 @@ describe('App', () => {
     wrapper;
   });
 
-  it('Should have 1 div', () => {
-    expect(wrapper.find('div').length).toEqual(1);
+  it('Should render TaskComp', () => {
+    expect(wrapper.find('TaskComp').length).toEqual(1);
   });
+  
+  it('Shouldn\'t render LogInComp', () => {
+    expect(wrapper.find('LogInComp').length).toEqual(0);
+  })
 
   // write test cases of what component should
   // render depending on the state values.
 });
 
-test('setloggedIn updates loggedin state', () => {
-  let wrapper = mount(<App />);
-  console.log(wrapper.loggedIn);
-  expect(wrapper.loggedIn).toEqual(false);
+
+// snapshot testing
+
+it('Renders App with TaskComp', () => {
+  const AppComponent = renderer.create(<App />).toJSON();
+  expect(AppComponent).toMatchSnapshot();
 });
+
 
 
 

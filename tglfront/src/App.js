@@ -10,8 +10,9 @@ const App = () => {
 
   if (loggedIn) {
     return <TaskComp user={uId}/>
+  } else {
+    return <LogInComp />
   }
-  return <LogInComp />
 }
 
 export default App;
