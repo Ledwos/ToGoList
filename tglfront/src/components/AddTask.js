@@ -4,7 +4,7 @@ const AddTask = (props) => {
     let year = new Date().getFullYear();
     return (
         <div>
-            <form onSubmit={props.handleSubmit} method='POST'>
+            <form onSubmit={props.handleSubmit} method='POST' id='taskForm'>
                 <label for='taskname'>Title:</label>
                 <input type='text' id='taskname' required></input>
                 <label for='taskdesc'>Description:</label>

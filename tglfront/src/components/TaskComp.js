@@ -4,7 +4,7 @@ import AddTask from './AddTask';
 const TaskComp = (props) => {
     
     const [tasks, setTasks] = useState([]);
-    const [taskForm, setTaskForm] = useState(true);
+    const [taskForm, setTaskForm] = useState(false);
 
     useEffect(() => {
         getTasks();
@@ -109,7 +109,7 @@ const TaskComp = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const uid = JSON.stringify(props.user);
+        const uid = props.user;
         const tname = document.getElementById('taskname').value;
         const tdesc = descString();
         const tdate = dateString();
@@ -130,8 +130,9 @@ const TaskComp = (props) => {
             })
         })
         .then((response) => {
-            // console.log("status: " + response.status)
             if (response.status === 200) {
+                document.getElementById('taskForm').reset();
+                setTaskForm(false);
                 getTasks();
             } else {
                 console.log("error: " + response.status)
