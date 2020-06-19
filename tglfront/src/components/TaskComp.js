@@ -143,6 +143,7 @@ const TaskComp = (props) => {
         <div>
             <p>I'm the task component</p>
             <p>the user id is {props.user}</p>
+            <button onClick={props.logOut}>log out</button>
             <div id='addTaskBtn' onClick={toggleForm}>New Task</div>
             {tasks.map(task => (
                 <div key={task.Tid}>

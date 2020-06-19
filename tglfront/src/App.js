@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import TaskComp from './components/TaskComp';
 import LogInComp from './components/LogInComp';
 
 
 const App = () => {
-  const [loggedIn, setloggedIn] = useState(false);
-  const [uId, setuId] = useState(5);
+  const [loggedIn, setloggedIn] = useState('false');
+  const [uId, setuId] = useState(0);
+
+  useEffect(() => {
+    logState();
+  }, [loggedIn])
+
+  const logState = () => {
+    const logStatus = localStorage.getItem('loggedIn');
+    const userId = localStorage.getItem('userId');
+    setloggedIn(logStatus);
+    setuId(userId);
+  };
+
+  const logOut = () => {
+    localStorage.setItem('loggedIn', 'false');
+    localStorage.setItem('userid', null);
+    logState();
+  }
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -38,12 +55,15 @@ const App = () => {
     .then(response => {
       if (resStatus === 200) {
         console.log(response);
+        localStorage.setItem('loggedIn', 'true');
+        localStorage.setItem('userId', response.userid);
+        logState();
       }
     })
   }
 
-  if (loggedIn) {
-    return <TaskComp user={uId}/>
+  if (loggedIn === 'true') {
+    return <TaskComp user={uId} logOut={logOut}/>
   } else {
     return <LogInComp handleLogin={handleLogin}/>
   }
