@@ -76,8 +76,8 @@ func Newacc(c *gin.Context) {
 func Loguserin(c *gin.Context) {
 	// form data structure
 	type Logform struct {
-		Email string `form:"email" binding:"required"`
-		Pass string `form:"pass" binding:"required"`
+		Email string `json:"email" binding:"required"`
+		Pass string `json:"pass" binding:"required"`
 	}
 	var json Logform
 	c.Bind(&json)
@@ -92,14 +92,14 @@ func Loguserin(c *gin.Context) {
 	rtn_id := ""
 	err := db.QueryRow(sqlLog, logEmail, logPass).Scan(&rtn_name, &rtn_id)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H {
-			"Error": "Make sure you type your email / password correctly",
-			"Details": err,
-		})
+		panic(err)
+		// c.JSON(http.StatusBadRequest, gin.H {
+		// 	"error": err,
+		// })
 	} else {
 		c.JSON(http.StatusOK, gin.H {
-			"Welcome back": rtn_name,
-			"User id": rtn_id,
+			"username": rtn_name,
+			"userid": rtn_id,
 		})
 	}
 }

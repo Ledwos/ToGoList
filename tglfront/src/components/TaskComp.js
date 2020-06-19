@@ -39,24 +39,25 @@ const TaskComp = (props) => {
         })
     }
 
-    const delTask = (e) => {
-        let taskId = parseInt(e.target.id);
-        fetch('http://localhost:8080/api/task/del', {
-            mode: 'cors',
-            method: 'post',
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({"taskid": taskId})
-        }).then((response) => {
-            if (response.status === 200) {
-                getTasks();
-            } else {
-                console.log("error: " + response.status)
-            }
-        })
-    };
+    //Delete task function
+    // const delTask = (e) => {
+    //     let taskId = parseInt(e.target.id);
+    //     fetch('http://localhost:8080/api/task/del', {
+    //         mode: 'cors',
+    //         method: 'post',
+    //         headers: {
+    //             'Accept': 'application/json, text/plain, */*',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({"taskid": taskId})
+    //     }).then((response) => {
+    //         if (response.status === 200) {
+    //             getTasks();
+    //         } else {
+    //             console.log("error: " + response.status)
+    //         }
+    //     })
+    // };
 
     const timeString = () => {
         let hr;
@@ -96,12 +97,15 @@ const TaskComp = (props) => {
 
     const descString = () => {
         let desc = document.getElementById('taskdesc').value;
-        if (desc == '') {
+        if (desc === '') {
             return 'none';
         } else {
             return desc;
         };
     };
+
+    // ADD BELOW TO CLEAR FORM ON SUBMIT
+    // document.getElementById('ContactForm').reset()
 
     const handleSubmit = (e) => {
         e.preventDefault();

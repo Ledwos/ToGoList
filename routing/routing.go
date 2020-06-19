@@ -29,7 +29,7 @@ func Routes(router *gin.Engine) {
 
 	//add api routes below
 	api.POST("/newacc", dbcon.Newacc)
-	api.GET("/login", dbcon.Loguserin)
+	api.POST("/login", dbcon.Loguserin)
 	api.POST("/newtask", dbcon.NewTask)
 	api.GET("tasks/:id", dbcon.GetTasks)
 	api.POST("task/u/complete", dbcon.CompTask)
