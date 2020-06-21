@@ -42,9 +42,9 @@ var db, err = sql.Open("postgres", os.Getenv("HDB_STRING"))
 func Newacc(c *gin.Context) {
 	// form data structure
 	type Accform struct {
-		Name string `form:"name" binding:"required"`
-		Pass string `form:"pass" binding:"required"`
-		Email string `form:"email" binding:"required"`
+		Name string `json:"name" binding:"required"`
+		Pass string `json:"pass" binding:"required"`
+		Email string `json:"email" binding:"required"`
 	}
 	var json Accform
 	c.Bind(&json)
