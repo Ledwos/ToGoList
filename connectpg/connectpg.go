@@ -9,7 +9,7 @@ import (
 	"os"
 
 	_ "github.com/lib/pq"
-	"github.com/joho/godotenv"
+	// "github.com/joho/godotenv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -35,7 +35,7 @@ func Dbconnect() {
 	}	
 }
 
-var loadEnv = godotenv.Load()
+// var loadEnv = godotenv.Load()
 var db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
 
 // create new user
