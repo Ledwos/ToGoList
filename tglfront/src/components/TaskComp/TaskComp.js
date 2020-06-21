@@ -147,7 +147,8 @@ const TaskComp = (props) => {
             <p>the user id is {props.user}</p>
             <button onClick={props.logOut}>log out</button>
             <div id='addTaskBtn' onClick={toggleForm}>New Task</div>
-            {tasks.map(task => (
+            {tasks.length > 0 ? [
+                tasks.map(task => (
                 <div key={task.Tid}>
                     <div className='taskHeader'>
                         <h4>{task.Tname}</h4>
@@ -157,7 +158,8 @@ const TaskComp = (props) => {
                         {task.Tdesc}
                     </div>
                 </div>
-            ))}
+            ))] : <p>No tasks set</p>
+        }
             {taskForm ? <AddTask handleSubmit={handleSubmit}/> : null}
         </div>
     );

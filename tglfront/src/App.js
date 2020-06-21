@@ -99,8 +99,6 @@ const App = () => {
       <Switch>
         <Route exact path='/' children={<HomeComp taskPage={taskPage} loginPage={loginPage} logOut={logOut} handleLogin={handleLogin} loggedIn={loggedIn} />} />
         <Route path='/tasks' children={loggedIn ? <TaskComp user={uId} uname={uName} logOut={logOut} homePage={homePage}/> : <Redirect to='/' />} />
-        {/* <Route path='/login' children={loggedIn ?  <Redirect to='/tasks' /> : <LogInComp handleLogin={handleLogin} signupPage={signupPage}/>} /> */}
-        {/* <Route path='/signup' children={loggedIn ? <Redirect to='/tasks' /> : <SignUpComp />} /> */}
       </Switch>
     </div>
   );

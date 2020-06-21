@@ -5,7 +5,7 @@ import SignUpComp from '../SignUpComp/SignUpComp';
 
 const HomeComp = (props) => {
     const [loginState, setloginState] = useState(false);
-    const [signupState, setsignupState] = useState(true);
+    const [signupState, setsignupState] = useState(false);
 
 
     const toggleLogin = () => {
