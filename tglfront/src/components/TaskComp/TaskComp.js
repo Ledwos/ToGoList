@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AddTask from './AddTask';
+import AddTask from '../AddTask/AddTask';
 
 const TaskComp = (props) => {
     
@@ -8,7 +8,7 @@ const TaskComp = (props) => {
 
     useEffect(() => {
         getTasks();
-    }, []);
+    }, [props.user]);
 
     const getTasks = () => {
         fetch(`http://www.localhost:8080/api/tasks/${props.user}`)
@@ -143,6 +143,7 @@ const TaskComp = (props) => {
     return (
         <div>
             <p>I'm the task component</p>
+            <h4>Welcome back, {props.uname}</h4>
             <p>the user id is {props.user}</p>
             <button onClick={props.logOut}>log out</button>
             <div id='addTaskBtn' onClick={toggleForm}>New Task</div>

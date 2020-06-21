@@ -1,6 +1,11 @@
 import React from 'react';
+// import { useHistory } from 'react-router-dom';
 
 const LogInComp = (props) => {
+    // let history = useHistory();
+    // const signupPage = () => {
+    //     history.push('/signup');
+    //   };
     return (
         <div>
             <p>I'm the log in component</p>
@@ -21,6 +26,9 @@ const LogInComp = (props) => {
                     ></input>
                 <button type='submit'>Log in</button>
             </form>
+            <br />
+            <p>Don't have an account? <span onClick={props.signupPage}>click here</span> to sign up</p>
+
         </div>
     );
 };
