@@ -22,7 +22,7 @@ func main() {
 
 	//serve static files (html / css / js)
 	router.Use(static.Serve("/", static.LocalFile("./tglfront/build", true)))
-	//cors
+	//cors - to tie it all together
 	router.Use(cors.Default())
 
 	//call route handler
