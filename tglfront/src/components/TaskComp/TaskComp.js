@@ -11,7 +11,7 @@ const TaskComp = (props) => {
     }, [props.user]);
 
     const getTasks = () => {
-        fetch(`http://www.localhost:8080/api/tasks/${props.user}`)
+        fetch(`http://localhost:8080/api/tasks/${props.user}`)
         .then(res => res.json())
         .then(data => setTasks(data));
     };
@@ -114,7 +114,7 @@ const TaskComp = (props) => {
         const tdesc = descString();
         const tdate = dateString();
         const ttime = timeString();
-        fetch('http://www.localhost:8080/api/newtask', {
+        fetch('http://localhost:8080/api/newtask', {
             mode: 'cors',
             method: 'post',
             headers: {
