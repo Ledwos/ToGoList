@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders LogInComp component 1`] = `
+<div>
+  <p>
+    I'm the log in component
+  </p>
+</div>
+`;
