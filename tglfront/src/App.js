@@ -34,9 +34,9 @@ const App = () => {
     history.push('/login');
   };
   // signup direct
-  const signupPage = () => {
-    history.push('/signup');
-  };
+  // const signupPage = () => {
+  //   history.push('/signup');
+  // };
 
   const logState = () => {
     const logStatus = localStorage.getItem('loggedIn');
