@@ -5,6 +5,13 @@ const SignUpComp = (props) => {
     const [pass2, setpass2] = useState('o');
 
     useEffect(() => {
+        const checkmatch = () => {
+            if (pass1 === pass2) {
+                return ':)';
+            } else {
+                return ':(';
+            };
+        };
         checkmatch();
     }, [pass1, pass2]);
 

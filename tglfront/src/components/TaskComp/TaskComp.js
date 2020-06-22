@@ -7,6 +7,11 @@ const TaskComp = (props) => {
     const [taskForm, setTaskForm] = useState(false);
 
     useEffect(() => {
+        const getTasks = () => {
+            fetch(`api/tasks/${props.user}`)
+            .then(res => res.json())
+            .then(data => setTasks(data));
+        };
         getTasks();
     }, [props.user]);
 
