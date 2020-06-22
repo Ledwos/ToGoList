@@ -64,7 +64,7 @@ const App = () => {
       "p-type": typeof(pass),
     });
     let resStatus;
-    fetch('http://localhost:8080/api/login', {
+    fetch('api/login', {
             mode: 'cors',
             method: 'post',
             headers: {

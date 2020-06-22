@@ -11,7 +11,7 @@ const TaskComp = (props) => {
     }, [props.user]);
 
     const getTasks = () => {
-        fetch(`http://localhost:8080/api/tasks/${props.user}`)
+        fetch(`api/tasks/${props.user}`)
         .then(res => res.json())
         .then(data => setTasks(data));
     };
@@ -22,7 +22,7 @@ const TaskComp = (props) => {
 
     const compTask = (e) => {
         let taskId = parseInt(e.target.id);
-        fetch('http://localhost:8080/api/task/u/complete', {
+        fetch('api/task/u/complete', {
             mode: 'cors',
             method: 'post',
             headers: {
@@ -42,7 +42,7 @@ const TaskComp = (props) => {
     //Delete task function
     // const delTask = (e) => {
     //     let taskId = parseInt(e.target.id);
-    //     fetch('http://localhost:8080/api/task/del', {
+    //     fetch('api/task/del', {
     //         mode: 'cors',
     //         method: 'post',
     //         headers: {
@@ -114,7 +114,7 @@ const TaskComp = (props) => {
         const tdesc = descString();
         const tdate = dateString();
         const ttime = timeString();
-        fetch('http://localhost:8080/api/newtask', {
+        fetch('api/newtask', {
             mode: 'cors',
             method: 'post',
             headers: {

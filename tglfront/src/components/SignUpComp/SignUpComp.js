@@ -37,7 +37,7 @@ const SignUpComp = (props) => {
         const name = document.getElementById('username').value;
         const email = document.getElementById('email').value;
         const pass = document.getElementById('pass').value;
-        fetch('http://localhost:8080/api/newacc', {
+        fetch('api/newacc', {
             mode: 'cors',
             method: 'post',
             headers: {
