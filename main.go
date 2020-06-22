@@ -21,7 +21,7 @@ func main() {
 	router := gin.Default()
 
 	//serve static files (html / css / js)
-	router.Use(static.Serve("/", static.LocalFile("./tglfront/build", true)))
+	// router.Use(static.Serve("/", static.LocalFile("./tglfront/build", true)))
 	//cors - to tie it all together
 	router.Use(cors.Default())
 
