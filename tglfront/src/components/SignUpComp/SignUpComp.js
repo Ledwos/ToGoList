@@ -5,6 +5,13 @@ const SignUpComp = (props) => {
     const [pass2, setpass2] = useState('o');
 
     useEffect(() => {
+        const checkmatch = () => {
+            if (pass1 === pass2) {
+                return ':)';
+            } else {
+                return ':(';
+            };
+        };
         checkmatch();
     }, [pass1, pass2]);
 
@@ -37,7 +44,7 @@ const SignUpComp = (props) => {
         const name = document.getElementById('username').value;
         const email = document.getElementById('email').value;
         const pass = document.getElementById('pass').value;
-        fetch('http://www.localhost:8080/api/newacc', {
+        fetch('api/newacc', {
             mode: 'cors',
             method: 'post',
             headers: {

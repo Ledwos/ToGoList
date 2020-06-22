@@ -7,8 +7,6 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import TaskComp from './components/TaskComp/TaskComp';
-import LogInComp from './components/LogInComp/LogInComp';
-import SignUpComp from './components/SignUpComp/SignUpComp';
 import HomeComp from './components/HomeComp/HomeComp';
 
 
@@ -36,9 +34,9 @@ const App = () => {
     history.push('/login');
   };
   // signup direct
-  const signupPage = () => {
-    history.push('/signup');
-  };
+  // const signupPage = () => {
+  //   history.push('/signup');
+  // };
 
   const logState = () => {
     const logStatus = localStorage.getItem('loggedIn');
@@ -66,7 +64,7 @@ const App = () => {
       "p-type": typeof(pass),
     });
     let resStatus;
-    fetch('http://www.localhost:8080/api/login', {
+    fetch('api/login', {
             mode: 'cors',
             method: 'post',
             headers: {
