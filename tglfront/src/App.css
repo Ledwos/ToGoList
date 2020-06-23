@@ -1,7 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+}
 
 #title {
     margin: 5px 0px 0px 10px;
     font-size: 30px;
+    color: rgb(255, 255, 255);
 }
 
 nav {
@@ -9,7 +14,8 @@ nav {
     justify-content: space-between;
     /* border: 2px solid red; */
     width: 100%;
-    background-color: aqua;
+    background-color: rgb(61, 178, 255);
+    color: rgb(255, 255, 255);
 
 }
 
@@ -17,6 +23,8 @@ nav {
     display: inline-flex;
     margin-right: 5%;
     /* border: 2px solid orange; */
+    padding: 12px 0px;
+    margin-bottom: 5px;
 }
 
 .navItem {

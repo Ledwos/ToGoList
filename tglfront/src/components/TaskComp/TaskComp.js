@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import AddTask from '../AddTask/AddTask';
+import './TaskComp.css';
 
 const TaskComp = (props) => {
     
@@ -109,9 +110,6 @@ const TaskComp = (props) => {
         };
     };
 
-    // ADD BELOW TO CLEAR FORM ON SUBMIT
-    // document.getElementById('ContactForm').reset()
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const uid = props.user;
@@ -146,25 +144,24 @@ const TaskComp = (props) => {
     };
 
     return (
-        <div>
-            <p>I'm the task component</p>
+        <div id='taskDiv'>
             <h4>Welcome back, {props.uname}</h4>
-            <p>the user id is {props.user}</p>
-            <button onClick={props.logOut}>log out</button>
-            <div id='addTaskBtn' onClick={toggleForm}>New Task</div>
-            {tasks.length > 0 ? [
-                tasks.map(task => (
-                <div key={task.Tid}>
-                    <div className='taskHeader'>
-                        <h4>{task.Tname}</h4>
-                        <p id={task.Tid} onClick={compTask}>X</p>
+            <div id='taskContainer'>
+                {tasks.length > 0 ? [
+                    tasks.map(task => (
+                    <div key={task.Tid} className='task'>
+                        <div className='taskHeader'>
+                            <h4 className='taskTitle'>{task.Tname}</h4>
+                            <p id={task.Tid} className='compBtn' onClick={compTask}>X</p>
+                        </div>
+                        <div className='taskDesc'>
+                            {task.Tdesc}
+                        </div>
                     </div>
-                    <div className='taskDesc'>
-                        {task.Tdesc}
-                    </div>
-                </div>
-            ))] : <p>No tasks set</p>
-        }
+                ))] : <p>No tasks set</p>
+                 }
+                 <p id='addTaskBtn' onClick={toggleForm}>New Task</p>
+            </div>
             {taskForm ? <AddTask handleSubmit={handleSubmit}/> : null}
         </div>
     );

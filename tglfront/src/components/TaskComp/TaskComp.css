@@ -1,0 +1,64 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#taskDiv {
+    /* border: 2px solid red; */
+    padding-top: 15px;
+    text-align: center;
+
+}
+
+#taskContainer {
+    /* border: 2px solid magenta; */
+    display: inline-block;
+    width: 80%;
+    max-width: 700px;
+}
+
+#addTaskBtn:hover {
+    cursor: pointer;
+    color: white;
+    background-color: rgb(61, 178, 255);
+}
+
+.task, #addTaskBtn {
+    border: 4px solid rgb(61, 178, 255);
+    border-radius: 10px;
+    margin: 10px 10px 15px 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(204, 235, 255);
+}
+
+/* .taskTitle {
+    border: 2px solid red;
+} */
+
+.taskHeader {
+    /* border: 2px solid pink; */
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.taskDesc {
+    display: inline-flex;
+    /* border: 2px solid blue; */
+}
+
+.compBtn {
+    border: 2px solid rgb(61, 178, 255);
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+    line-height: 24px;
+    border-radius: 5px;
+}
+
+.compBtn:hover {
+    cursor: pointer;
+    background-color: rgb(61, 178, 255);
+    color: white
+}
