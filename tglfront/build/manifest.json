@@ -7,5 +7,5 @@
         "type": "image/x-icon"
       }],
     "start_url": ".",
-    "display": "standalone"
+    "display": "standalone",
   }
