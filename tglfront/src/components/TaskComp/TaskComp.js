@@ -5,7 +5,7 @@ import './TaskComp.css';
 const TaskComp = (props) => {
     
     const [tasks, setTasks] = useState([]);
-    const [taskForm, setTaskForm] = useState(false);
+    const [taskForm, setTaskForm] = useState(true);
 
     useEffect(() => {
         const getTasks = () => {
@@ -161,8 +161,8 @@ const TaskComp = (props) => {
                 ))] : <p>No tasks set</p>
                  }
                  <p id='addTaskBtn' onClick={toggleForm}>New Task</p>
+                {taskForm ? <AddTask handleSubmit={handleSubmit}/> : null}
             </div>
-            {taskForm ? <AddTask handleSubmit={handleSubmit}/> : null}
         </div>
     );
 };

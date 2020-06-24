@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#addTaskDiv {
+    display: inline-block;
+    /* border: 2px solid red; */
+    width: 100%;
+    max-width: 700px;
+}
+
+#taskForm {
+    border: 4px solid rgb(61, 178, 255);
+    border-radius: 10px;
+    background-color: rgb(204, 235, 255);
+    margin: 10px 10px 15px 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.txtLabels, #taskdate, #tasktime {
+    display: flex;
+    justify-content: flex-start;
+    margin: 10px 0px;
+}
+
+#taskname, #taskdesc {
+    border: 1px solid rgb(61, 178, 255);
+    border-radius: 3px;
+    background-color: white;
+}
+
+#taskname {
+    /* line-height: 30px; */
+    padding: 8px 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+#taskdesc {
+    resize: vertical;
+    width: 95%;
+    max-width: 700px;
+    min-height: 50px;
+    padding: 8px 5px;
+}
+
+#dateD, #dateM, #dateY, #timeH, #timeM {
+    margin: -5px 5px;
+    padding: 5px;
+    width: 40px;
+    border: 1px solid rgb(61, 178, 255);
+    border-radius: 3px;
+    background-color: white;
+}
+
+#dateD, #dateM {
+    width: 22px;
+}
+
+#timeH, #timeM {
+    width: 30px;
+}
+
+#addBtn {
+    border: 3px solid rgb(61, 178, 255);
+    border-radius: 3px;
+    margin: 20px 10px 15px 10px;
+    padding: 5px;
+    background-color: rgb(204, 235, 255);
+}
+
+#addBtn:active {
+    margin: 23px 10px 12px 10px;
+}
+
+#addBtn:hover {
+    cursor: pointer;
+    background-color: rgb(61, 178, 255);
+    color: white
+}
+
+
+
+/* remove arrow btn's from number input  */
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

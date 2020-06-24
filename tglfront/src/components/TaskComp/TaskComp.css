@@ -7,7 +7,6 @@
     /* border: 2px solid red; */
     padding-top: 15px;
     text-align: center;
-
 }
 
 #taskContainer {
@@ -33,19 +32,13 @@
     background-color: rgb(204, 235, 255);
 }
 
-/* .taskTitle {
-    border: 2px solid red;
-} */
-
 .taskHeader {
-    /* border: 2px solid pink; */
     display: inline-flex;
     justify-content: space-between;
 }
 
 .taskDesc {
     display: inline-flex;
-    /* border: 2px solid blue; */
 }
 
 .compBtn {
@@ -61,4 +54,8 @@
     cursor: pointer;
     background-color: rgb(61, 178, 255);
     color: white
+}
+
+.compBtn:active {
+    margin: 2px 0px -2px 0px;
 }
