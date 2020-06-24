@@ -1,7 +1,5 @@
 #loginDiv {
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* border: 2px solid blue; */
+    margin-top: 70px;
     width: 100%;
     text-align: center;
 }
@@ -18,21 +16,31 @@
 #u_email, #u_pass {
     margin: 10px;
     padding: 10px;
-    font-size: 18px;
-    border-radius: 5px;
+    font-size: 16px;
+    border: 3px solid rgb(61, 178, 255);
+    border-radius: 3px;
 }
 
 #loginBtn {
-    border-radius: 5px;
+    border: 3px solid rgb(61, 178, 255);
+    border-radius: 3px;
     width: 50%;
     padding: 10px 0px;
+    margin-top: 20px;
     align-self: center;
+    box-shadow: 3px 3px 0px 0px rgb(44, 127, 182);
+    background-color: rgb(204, 235, 255);
 }
 
 #loginBtn:hover {
     cursor: pointer;
-    background-color: blueviolet;
+    background-color: rgb(61, 178, 255);
     color: white;
+}
+
+#loginBtn:active {
+    box-shadow: 0px 0px 0px 0px rgb(44, 127, 182);
+    margin: 23px -3px -3px 3px;
 }
 
 #clickHere {
@@ -40,5 +48,13 @@
 }
 
 #clickHere:hover {
+    cursor: pointer;
+}
+
+#clickLogin {
+    color: gray;
+}
+
+#clickLogin:hover {
     cursor: pointer;
 }

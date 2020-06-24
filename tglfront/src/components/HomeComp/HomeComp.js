@@ -1,6 +1,7 @@
 import React from 'react';
 import LogInComp from '../LogInComp/LogInComp';
 import SignUpComp from '../SignUpComp/SignUpComp';
+import './HomeComp.css';
 
 
 const HomeComp = (props) => {
@@ -10,11 +11,13 @@ const HomeComp = (props) => {
         return <SignUpComp {...props} />
     } else {
         return (
-            <div>
-                <p>Welcome to ToGoList!</p>
-                <p>A task manager app to help you keep track of your work!</p>
-                <p>Are you ready to become more organised? Click below to get started:</p>
-                <button onClick={props.toggleSignup}>Organise Me!</button>
+            <div id='homeDiv'>
+                <div id='homeTxt'>
+                    <p>Welcome to ToGoList!</p> <br/>
+                    <p>A task manager app to help you keep track of your work!</p><br/>
+                    <p>Are you ready to become more organised? Click below to get started:</p><br/>
+                </div>
+                    <button onClick={props.toggleSignup} id='signupBtn'>Organise Me!</button>
             </div>
         );
     }

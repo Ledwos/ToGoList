@@ -8,8 +8,6 @@ import {
 import './App.css';
 import TaskComp from './components/TaskComp/TaskComp';
 import HomeComp from './components/HomeComp/HomeComp';
-import LogInComp from './components/LogInComp/LogInComp';
-import SignUpComp from './components/SignUpComp/SignUpComp';
 
 
 const App = () => {
@@ -40,6 +38,7 @@ const App = () => {
   // route functions
   // home direct
   const homePage = () => {
+    resetHome();
     history.push('/');
   };
   // task direct
@@ -108,7 +107,8 @@ const App = () => {
 
   return (
     <div id='App'>
-      <nav><h3 id='title'>ToGoList</h3> 
+      <nav>
+          <h3 id='title' onClick={homePage}>ToGoList</h3> 
           {loggedIn ? [
             <ul className='navMain' key='x'>
             <li className='navItem' key='1' onClick={taskPage}>Tasks</li>

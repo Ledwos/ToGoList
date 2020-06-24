@@ -1,0 +1,26 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#homeDiv {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+}
+
+#homeTxt {
+    width: 80%;
+    display: inline-block;
+}
+
+#signupBtn {
+    max-width: 150px;
+    border: 3px solid rgb(61, 178, 255);
+    border-radius: 3px;
+    margin: 20px 10px 15px 10px;
+    padding: 5px;
+    background-color: rgb(204, 235, 255);
+}

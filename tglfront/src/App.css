@@ -4,10 +4,15 @@
 }
 
 #title {
-    margin: 5px 0px 0px 10px;
+    margin: 7px 0px 0px 15px;
     font-size: 30px;
     color: rgb(255, 255, 255);
 }
+
+#title:hover {
+    cursor: pointer;
+}
+
 
 nav {
     display: inline-flex;
@@ -30,12 +35,13 @@ nav {
 .navItem {
     display: inline-flex;
     list-style-type: none;
-    /* border: 2px solid blue; */
     padding: 2px 5px;
     margin: 0px 5px;
+    font-size: 20px;
 }
 
 .navItem:hover {
     cursor: pointer;
+    color: rgb(42, 124, 179)
 }
 

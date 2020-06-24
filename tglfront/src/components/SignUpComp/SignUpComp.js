@@ -8,27 +8,37 @@ const SignUpComp = (props) => {
     useEffect(() => {
         const checkmatch = () => {
             if (pass1 === pass2) {
-                return ':)';
+                return '😀';
             } else {
-                return ':(';
+                return '🙁';
             };
         };
         checkmatch();
     }, [pass1, pass2]);
 
+    const checkempty = () => {
+        if (pass1 === '') {
+            setpass1('i');
+        }
+        if (pass2 === '') {
+            setpass2('o');
+        }
+    }
+
     const checkmatch = () => {
+        checkempty();
         if (pass1 === pass2) {
-            return ':)';
+            return '😀';
         } else {
-            return ':(';
+            return '🙁';
         };
     };
     
     const checknum = () => {
-        if (/\d/.test(pass1)) {
-            return ':)';
+        if (/\d/.test(pass1) | /\d/.test(pass2)) {
+            return '😀';
         } else {
-            return ':(';
+            return '🙁';
         };
     };
 
@@ -95,14 +105,24 @@ const SignUpComp = (props) => {
                        required 
                        onChange={setp2}></input>
                 <button type='submit' id='signupBtn'>Sign Up</button>
+                <table id='passTable'> 
+                    <tr>
+                        <td className='passTxt'>Passwords match :</td>
+                        <td className='passVal'>{checkmatch()}</td>
+                    </tr>
+                    <tr>
+                        <td className='passTxt'>Contain number(s) :</td>
+                        <td className='passVal'>{checknum()}</td>
+                    </tr>
+                </table>
             </form>
             <div>
-                <p>passwords match {checkmatch()}</p>
-                <p>password contains number(s) {checknum()}</p>
+                {/* <p>passwords match {checkmatch()}</p> */}
+                {/* <p>password <br />contains number(s) {checknum()}</p> */}
             </div>
             <br />
-            <p onClick={props.toggleLogin}>back to log in</p>
-            <p onClick={props.resetHome}>X</p>
+            <p onClick={props.toggleLogin} id='clickLogin'>back to log in</p>
+            {/* <p onClick={props.resetHome}>X</p> */}
         </div>
     );
 };

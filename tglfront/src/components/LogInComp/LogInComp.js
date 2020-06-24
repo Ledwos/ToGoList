@@ -23,8 +23,10 @@ const LogInComp = (props) => {
                 <button type='submit' id='loginBtn'>Log in</button>
             </form>
             <br />
+            <br />
+            <br />
             <p>Don't have an account? <span onClick={props.toggleSignup} id='clickHere'>click here</span> to sign up</p>
-            <p onClick={props.resetHome}>X</p>
+            {/* <p onClick={props.resetHome}>X</p> */}
         </div>
     );
 };
