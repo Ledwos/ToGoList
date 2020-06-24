@@ -1,29 +1,27 @@
 import React from 'react';
+import './AddTask.css';
 
 const AddTask = (props) => {
     let year = new Date().getFullYear();
     return (
-        <div>
+        <div id='addTaskDiv'>
             <form onSubmit={props.handleSubmit} method='POST' id='taskForm'>
-                <label for='taskname'>Title:</label>
-                <input type='text' id='taskname' required></input>
-                <label for='taskdesc'>Description:</label>
+                <label for='taskname' className='txtLabels'>Task Name:</label>
+                <input type='text' id='taskname' placeholder='Clean garage' required></input>
+                <label for='taskdesc' className='txtLabels'>Description:</label>
                 <textarea id='taskdesc' placeholder='(optional)'></textarea>
-                <label for='taskdate'>Date:</label>
+                <label for='taskdate' className='txtLabels'>Date:</label>
                 <div id='taskdate'>
-                    <label for='dateD'>DD:</label>
-                    <input type='number' min="1" max="31" placeholder="01" id="dateD"></input> -
-                    <label for='dateM'>MM:</label> 
-                    <input type='number' min="1" max="12" placeholder="01" id="dateM"></input> -
-                    <label for='dateD'>YY:</label>
-                    <input type='number' min={year} max="2099" placeholder={year} id="dateY"></input>
+                    <input type='number' min="1" max="31" placeholder="DD" id="dateD"></input>/
+                    <input type='number' min="1" max="12" placeholder="MM" id="dateM"></input>/
+                    <input type='number' min={year} max="2099" placeholder="YYYY" id="dateY"></input>
                 </div>
-                <label for='tasktime'>Time:</label>
+                <label for='tasktime' className='txtLabels'>Time:</label>
                 <div id='tasktime'>
-                    <input type='number' min="0" max="23" placeholder="00" id="timeH"></input> :
-                    <input type='number' min="0" max="59" placeholder="00" id="timeM"></input>
+                    <input type='number' min="0" max="23" placeholder="HH" id="timeH"></input>: 
+                    <input type='number' min="0" max="59" placeholder="MM" id="timeM"></input>
                 </div>
-                <button type='submit'>Add!</button>
+                <button type='submit' id='addBtn'>Add!</button>
             </form>
         </div>
     );

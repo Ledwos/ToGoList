@@ -1,0 +1,73 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+#taskDiv {
+    /* border: 2px solid red; */
+    padding-top: 15px;
+    text-align: center;
+}
+
+#taskContainer {
+    /* border: 2px solid magenta; */
+    display: inline-block;
+    width: 80%;
+    max-width: 700px;
+}
+
+.task, #addTaskBtn {
+    border: 3px solid rgb(61, 178, 255);
+    border-radius: 3px;
+    margin: 10px 10px 15px 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(204, 235, 255);
+}
+
+#addTaskBtn{
+    box-shadow: 3px 3px 0px 0px rgb(44, 127, 182);
+}
+
+#addTaskBtn:active {
+    margin: 16px 7px 12px 13px;
+    box-shadow: 0px 0px 0px 0px rgb(44, 127, 182);
+    
+    
+}
+
+#addTaskBtn:hover {
+    cursor: pointer;
+    color: white;
+    background-color: rgb(61, 178, 255);
+}
+
+.taskHeader {
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.taskDesc {
+    display: inline-flex;
+}
+
+.compBtn {
+    border: 2px solid rgb(61, 178, 255);
+    width: 25px;
+    height: 25px;
+    font-size: 25px;
+    line-height: 24px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 0px 0px rgb(44, 127, 182);
+}
+
+.compBtn:hover {
+    cursor: pointer;
+    background-color: rgb(61, 178, 255);
+    color: white
+}
+
+.compBtn:active {
+    margin: 2px 0px -2px 0px;
+}
