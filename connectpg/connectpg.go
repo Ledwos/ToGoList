@@ -5,21 +5,22 @@ package connectpg
 import (
 	"net/http"
 	"database/sql"
-	// "log"
 	"os"
 
 	_ "github.com/lib/pq"
-	// "github.com/joho/godotenv"
-
 	"github.com/gin-gonic/gin"
+	// Dev only
+	"log"
+	"github.com/joho/godotenv"
+
 )
 
 func Dbconnect() {
-	// load env data - FOR DEVELOPMENT ONLY
-	// loadEnv := godotenv.Load()
-	// if loadEnv != nil {
-	// 	log.Fatal("Error loading .env file")
-	// }
+	// Dev only
+	loadEnv := godotenv.Load()
+	if loadEnv != nil {
+		log.Fatal("Error loading .env file")
+	}
 
 	// connect to db
 	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
@@ -35,7 +36,9 @@ func Dbconnect() {
 	}	
 }
 
-// var loadEnv = godotenv.Load()
+// Dev only
+var loadEnv = godotenv.Load()
+
 var db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
 
 // create new user

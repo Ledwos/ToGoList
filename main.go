@@ -1,7 +1,8 @@
 package main
 
 import (
-	"os"
+	// Deploy only
+	// "os"
 
 	routes "github.com/Ledwos/ToGoList/routing"
 	dbcon "github.com/Ledwos/ToGoList/connectpg"
@@ -22,14 +23,22 @@ func main() {
 
 	//serve static files (html / css / js)
 	router.Use(static.Serve("/", static.LocalFile("./tglfront/build", true)))
+	
+	// cooperate with react router
+	router.NoRoute(func(c *gin.Context) {
+		c.File("./tglfront/build/index.html")
+	})
+	
 	//cors - to tie it all together
 	router.Use(cors.Default())
 
 	//call route handler
 	routes.Routes(router)
 
-	// start / run server on given port
-	router.Run(":"+os.Getenv("PORT"))
-	// CHANGE router.Run AND UNCOMMENT OS IMPORT WHEN DEPLOYING! - DEVELOPMENT ONLY
-	// router.Run(":8080")
+	// Deploy only
+	// start / run server on given port 
+	// router.Run(":"+os.Getenv("PORT"))
+	
+	// Dev only
+	router.Run(":8080")
 }
