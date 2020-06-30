@@ -8,6 +8,7 @@ import {
 import './App.css';
 import TaskComp from './components/TaskComp/TaskComp';
 import HomeComp from './components/HomeComp/HomeComp';
+import NotFound from './components/NotFound/NotFound';
 
 
 const App = () => {
@@ -121,13 +122,10 @@ const App = () => {
                 </ul>
               ]}
         </nav>
-        {/* {loginState ? <LogInComp toggleSignup={toggleSignup} resetHome={resetHome} handleLogin={handleLogin}/> : null} */}
-        {/* {signupState ? <SignUpComp toggleLogin={toggleLogin} resetHome={resetHome} /> : null} */}
-        {/* {loginState | signupState === true ? null : <HomeComp toggleSignup={toggleSignup}/>} */}
       <Switch>
         <Route exact path='/' children={<HomeComp handleLogin={handleLogin} loggedIn={loggedIn} resetHome={resetHome} loginState={loginState} signupState={signupState} toggleSignup={toggleSignup} toggleLogin={toggleLogin}/> } />
-        {/* <Route exact path='/login' children={<LogInComp toggleSignup={toggleSignup} resetHome={resetHome} handleLogin={handleLogin} />} /> */}
         <Route path='/tasks' children={loggedIn ? <TaskComp user={uId} uname={uName} logOut={logOut} homePage={homePage}/> : <Redirect to='/' />} />
+        <Route children={<NotFound homePage={homePage}/>} />
       </Switch>
     </div>
   );
