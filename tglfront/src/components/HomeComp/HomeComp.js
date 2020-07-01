@@ -15,9 +15,9 @@ const HomeComp = (props) => {
                 <div id='homeTxt'>
                     <p>Welcome to ToGoList!</p> <br/>
                     <p>A task manager app to help you keep track of your work!</p><br/>
-                    <p>Are you ready to become more organised? Click below to get started:</p><br/>
+                    {props.loggedIn ? null : <p>Are you ready to become more organised? Click below to get started:</p>}<br/>
                 </div>
-                    <button onClick={props.toggleSignup} id='signupBtn'>Organise Me!</button>
+                {props.loggedIn ? null : <button onClick={props.toggleSignup} id='signupBtn'>Organise Me!</button> }
             </div>
         );
     }

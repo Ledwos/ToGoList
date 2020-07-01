@@ -4,6 +4,7 @@ import './SignUpComp.css';
 const SignUpComp = (props) => {
     const [pass1, setpass1] = useState('i');
     const [pass2, setpass2] = useState('o');
+    const [emErr, setemErr] = useState(false);
 
     useEffect(() => {
         const checkmatch = () => {
@@ -69,8 +70,12 @@ const SignUpComp = (props) => {
             })
         })
         .then((response) => {
-            if (response.status === 200) {
-                console.log('congrats');
+            if (response.status === 409) {
+                console.log('email already exists');
+                setemErr(true);
+            }
+            else if (response.status === 200) {
+                console.log(response);
                 document.getElementById('signupForm').reset();
                 props.resetHome();
             } else {
@@ -90,6 +95,7 @@ const SignUpComp = (props) => {
                         placeholder='Email'
                         pattern="[a-zA-Z0-9!#$%&amp;'*+\/=?^_`{|}~.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*"
                         required></input>
+                {emErr ? <p className='errTxt'>email already exists</p> : null}
                 <input minLength='8' 
                        type='password' 
                        id='pass'
@@ -105,24 +111,21 @@ const SignUpComp = (props) => {
                        required 
                        onChange={setp2}></input>
                 <button type='submit' id='signupBtn'>Sign Up</button>
-                <table id='passTable'> 
-                    <tr>
-                        <td className='passTxt'>Passwords match :</td>
-                        <td className='passVal'>{checkmatch()}</td>
-                    </tr>
-                    <tr>
-                        <td className='passTxt'>Contain number(s) :</td>
-                        <td className='passVal'>{checknum()}</td>
-                    </tr>
+                <table id='passTable'>
+                    <tbody>
+                        <tr>
+                            <td className='passTxt'>Passwords match :</td>
+                            <td className='passVal'>{checkmatch()}</td>
+                        </tr>
+                        <tr>
+                            <td className='passTxt'>Contain number(s) :</td>
+                            <td className='passVal'>{checknum()}</td>
+                        </tr>
+                    </tbody> 
                 </table>
             </form>
-            <div>
-                {/* <p>passwords match {checkmatch()}</p> */}
-                {/* <p>password <br />contains number(s) {checknum()}</p> */}
-            </div>
             <br />
             <p onClick={props.toggleLogin} id='clickLogin'>back to log in</p>
-            {/* <p onClick={props.resetHome}>X</p> */}
         </div>
     );
 };
