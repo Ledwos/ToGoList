@@ -2,7 +2,7 @@ package main
 
 import (
 	// Deploy only
-	// "os"
+	"os"
 
 	routes "github.com/Ledwos/ToGoList/routing"
 	dbcon "github.com/Ledwos/ToGoList/connectpg"
@@ -37,8 +37,8 @@ func main() {
 
 	// Deploy only
 	// start / run server on given port 
-	// router.Run(":"+os.Getenv("PORT"))
+	router.Run(":"+os.Getenv("PORT"))
 	
 	// Dev only
-	router.Run(":8080")
+	// router.Run(":8080")
 }

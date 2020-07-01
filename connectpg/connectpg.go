@@ -10,17 +10,17 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/gin-gonic/gin"
 	// Dev only
-	"log"
-	"github.com/joho/godotenv"
+	// "log"
+	// "github.com/joho/godotenv"
 
 )
 
 func Dbconnect() {
 	// Dev only
-	loadEnv := godotenv.Load()
-	if loadEnv != nil {
-		log.Fatal("Error loading .env file")
-	}
+	// loadEnv := godotenv.Load()
+	// if loadEnv != nil {
+	// 	log.Fatal("Error loading .env file")
+	// }
 
 	// connect to db
 	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
@@ -37,7 +37,7 @@ func Dbconnect() {
 }
 
 // Dev only
-var loadEnv = godotenv.Load()
+// var loadEnv = godotenv.Load()
 
 var db, err = sql.Open("postgres", os.Getenv("DATABASE_URL"))
 
