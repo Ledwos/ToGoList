@@ -58,3 +58,7 @@
 #clickLogin:hover {
     cursor: pointer;
 }
+
+.errTxt {
+    color: red;
+}

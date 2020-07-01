@@ -5,7 +5,7 @@ import './TaskComp.css';
 const TaskComp = (props) => {
     
     const [tasks, setTasks] = useState([]);
-    const [taskForm, setTaskForm] = useState(true);
+    const [taskForm, setTaskForm] = useState(false);
 
     useEffect(() => {
         const getTasks = () => {

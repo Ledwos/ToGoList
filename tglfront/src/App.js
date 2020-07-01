@@ -8,6 +8,7 @@ import {
 import './App.css';
 import TaskComp from './components/TaskComp/TaskComp';
 import HomeComp from './components/HomeComp/HomeComp';
+import NotFound from './components/NotFound/NotFound';
 
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
   const [uName, setuName] = useState('');
   const [loginState, setloginState] = useState(false);
   const [signupState, setsignupState] = useState(false);
+  const [errTxt, seterrTxt] = useState(false);
 
   useEffect(() => {
     logState();
@@ -69,12 +71,6 @@ const App = () => {
     e.preventDefault();
     const email = document.getElementById('u_email').value;
     const pass = document.getElementById('u_pass').value;
-    console.dir({
-      "email": email,
-      "e-type": typeof(email),
-      "pass": pass,
-      "p-type": typeof(pass),
-    });
     let resStatus;
     fetch('api/login', {
             mode: 'cors',
@@ -101,6 +97,8 @@ const App = () => {
         logState();
         taskPage();
         resetHome();
+      } else if (resStatus === 400) {
+        seterrTxt(true);
       }
     })
   };
@@ -121,13 +119,10 @@ const App = () => {
                 </ul>
               ]}
         </nav>
-        {/* {loginState ? <LogInComp toggleSignup={toggleSignup} resetHome={resetHome} handleLogin={handleLogin}/> : null} */}
-        {/* {signupState ? <SignUpComp toggleLogin={toggleLogin} resetHome={resetHome} /> : null} */}
-        {/* {loginState | signupState === true ? null : <HomeComp toggleSignup={toggleSignup}/>} */}
       <Switch>
-        <Route exact path='/' children={<HomeComp handleLogin={handleLogin} loggedIn={loggedIn} resetHome={resetHome} loginState={loginState} signupState={signupState} toggleSignup={toggleSignup} toggleLogin={toggleLogin}/> } />
-        {/* <Route exact path='/login' children={<LogInComp toggleSignup={toggleSignup} resetHome={resetHome} handleLogin={handleLogin} />} /> */}
+        <Route exact path='/' children={<HomeComp handleLogin={handleLogin} loggedIn={loggedIn} resetHome={resetHome} loginState={loginState} signupState={signupState} toggleSignup={toggleSignup} toggleLogin={toggleLogin} errTxt={errTxt} seterrTxt={seterrTxt}/> } />
         <Route path='/tasks' children={loggedIn ? <TaskComp user={uId} uname={uName} logOut={logOut} homePage={homePage}/> : <Redirect to='/' />} />
+        <Route children={<NotFound homePage={homePage}/>} />
       </Switch>
     </div>
   );
