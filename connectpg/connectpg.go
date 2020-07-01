@@ -64,7 +64,7 @@ func Newacc(c *gin.Context) {
 	rtn_name := ""
 	err := db.QueryRow(sqlNewAcc, accName, accPass, accEmail).Scan(&rtn_name)
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H {
+		c.JSON(409, gin.H {
 			"Error": "email already used",
 			"Details": err,
 		})
