@@ -95,10 +95,9 @@ func Loguserin(c *gin.Context) {
 	rtn_id := ""
 	err := db.QueryRow(sqlLog, logEmail, logPass).Scan(&rtn_name, &rtn_id)
 	if err != nil {
-		panic(err)
-		// c.JSON(http.StatusBadRequest, gin.H {
-		// 	"error": err,
-		// })
+		c.JSON(400, gin.H {
+			"error": "Please check your login details",
+		})
 	} else {
 		c.JSON(http.StatusOK, gin.H {
 			"username": rtn_name,
@@ -278,56 +277,6 @@ func NewTask(c *gin.Context) {
 }
 
 
-
-// ALTERNATE ADD A USER 
-// add new task for user
-// func NewTask(c *gin.Context) {
-// 	// task json data
-// 	type taskForm struct {
-// 		Userid   string	`json:"userid" binding:"required"`
-// 		Taskname string `json:"taskname" binding:"required"`
-// 		Taskdesc string `json:"taskdesc" binding:"required"`
-// 		Taskdate string `json:"taskdate" binding:"required"`
-// 		Tasktime string `json:"tasktime" binding:"required"`
-// 	}
-// 	var json taskForm
-// 	c.Bind(&json)
-// 	// get form data
-// 	userid := json.Userid
-// 	taskname := json.Taskname
-// 	taskdesc := json.Taskdesc
-// 	taskdate := json.Taskdate
-// 	tasktime := json.Tasktime
-
-// 	type res struct {
-// 		Uid   string
-// 		Tname string		
-// 		Tdesc string		
-// 		Tdate string
-// 		Ttime string
-// 	}
-
-// 	result := []res{}
-
-// 	empty := " "
-// 	if taskdesc == " " {
-// 		empty = "none"
-// 	} else {
-// 		empty = taskdesc
-// 	}
-
-// 	row := res{userid, taskname, empty, taskdate, tasktime}
-// 	result = append(result, row)
-
-// 		// c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-//         // c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-//         // c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-//         // c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
-// 	c.JSON(http.StatusOK, result)
-// 	return
-// }
-
-
 // sql query to update bridging table UNCOMMENT
 func newTask2(t_id, u_id string) string{
 	sqlMany := `
@@ -386,7 +335,6 @@ func GetTasks(c *gin.Context) {
 		result = append(result, row)
 	}
 	c.Header("Access-Control-Allow-Origin", "*")
-    // c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
 	c.JSON(http.StatusOK, &result)
 
 }
@@ -545,12 +493,6 @@ func DeleteTask(c *gin.Context) {
 	if err != nil {
 		panic(err)
 	} else {
-		// c.Header("Access-Control-Allow-Origin", "*")
-		// c.Header("Access-Control-Allow-Headers", "access-control-allow-origin, access-control-allow-headers")
-		// c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-        // c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-        // c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
-        // c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT")
 		c.JSON(http.StatusOK, gin.H {
 			"response": 1,
 		})
